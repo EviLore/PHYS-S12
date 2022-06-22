@@ -20,8 +20,13 @@ p {font-size: 16px;}
 
 .bodytext {
   padding-inline: 100px;
+  padding-bottom: 15px;
 }
 
 .spacer {
-  padding: 25px;
+  padding: 20px;
+}
+
+.spacersmall {
+  padding: 10px;
 }
