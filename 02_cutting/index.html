@@ -52,25 +52,178 @@
 <div class="bodytext">
   For Week 2, we focused on learning the basics of Fusion 360, building a press-fit construction kit with kerf taken into account, 
   and then modeling household objects or components for our final project. Let's start with the basics. 
+  <br>
 
-  <img src="/02_cutting/001.png" class="img-fluid" alt="Responsive image">
+  <img src="/02_cutting/001.png" class="imagedoc">
 
 </div>
 
 <div class="bodytext">
+  <br>
   First, I drew a 40mm x 40mm rectangle in sketch mode and added 3mm central slits on each side, per the PHYS S-12 tutorial.
+ <br>
+  <br>
+
+  <img src="/02_cutting/002.png" class="imagedoc">
+
+  <br>
+
+  Next, I included a 3mm fillet on each of the outer corners of the slits, 
+  for smoother operation, again per the PHYS S-12 tutorial. 
+  <br><br>
+  At this point, I ventured into experimenting with my own components. 
+  My initial thought was that a pyramid construction would be a good starting point, 
+  since it involves square pieces and triangle pieces, plus a connector piece. 
+  <br><br>
+
+  Let's start by determining the geometry of the pyramid so that we know the sizes for the press kit pieces. 
+  A square pyramid floor keeps things tidy.. We already were looking at a square piece, so we can try four 40mm x 40mm square pieces for the floor. 
+  <br>
   </div>  
 
+
   <div class="bodytext">
- 
+    <img src="/02_cutting/003.png" class="imagedoc">
+    <br>
+    <br>
+    Looking at this diagram  (source: https://www.cuemath.com/geometry/square-pyramid/ ) for visualization purposes, 
+    we can see that it's necessary to decide how to segment the pieces for the sides now. 
+    They could be bisected, per the above, or each of the three sides could be made up of four triangular segments: 
     </div> 
 
 <div class="bodytext">
+  <img src="/02_cutting/004.png" class="imagedoc">
+  <br>
+  (image source: https://commons.wikimedia.org/wiki/File:Equilateral_triangle_cut_to_4.svg )
+  <br><br>
+
+   The latter, with four triangular pieces per side, is more versatile--plus it's a Triforce--so we'll go with that.
+    Since the base sides are 80mm each, each triangle's sides should be 40mm, and we'll need 16 triangles (four per side). 
+    We'll need to determine where the connector points should be, optimally. So let's start with a sketch. 
+</div>
+
+<div class="bodytext">
+  <img src="/02_cutting/005.png" class="imagedoc">
+  <br>
+  <br>
+  We have some considerations for the connector piece. But for now, let's move on to designing the triangle piece. 
+  I've referenced another project to determine the material thickness of 3.8mm and a kerf of 0.2mm. 
+  However, if we adapt the PHYS S-12 tutorial to the triangle piece, by setting an offset of 10mm for the slit,
+   this barely leaves any remaining material on the interior of the triangle. 
+   As such, we will move forward with a 5mm depth notch. Midpoint lines are set using construction lines,
+    they are offset by (thickness-kerf)/2 and then mirrored. 
+</div>
+
+<div class="bodytext">
+  <img src="/02_cutting/006.png" class="imagedoc">
+</div>
+
+<div class="bodytext">
+  <img src="/02_cutting/007.png" class="imagedoc">
+  <br>
+  <br>
+  At this point, we want to fillet the slits. However, a 3mm fillet setting produced unusable results for this notch depth, so we'll go with a more modest 1mm fillet setting. 
+</div>
+
+<div class="bodytext">
+  <img src="/02_cutting/008.png" class="imagedoc">
+  <br>
+  <br>
+  For this test print, the width of the slits ended up being too large to fit snugly, 
+  so the Fusion 360 file needed to be adjusted. The kerf setting was increased modestly to 0.4mm, 
+  but that didn't make a noticeable difference--clearly there was an issue whereby the laser is going over each cut twice, 
+  significantly increasing the kerf. For now, I increased the kerf setting to 10mm to compensate. 
+<br><br>
+This produced a more usable set of slits. 
+</div>
+
+<div class="bodytext">
+  <img src="/02_cutting/009.png" class="imagedoc">
+  <br><br>
+  For the final print, we'll increase kerf further to 1.2mm for snugness.
+
+<br><br>
+Now back to the square for V2, with 5mm offset and 1.2mm kerf. We'll give it a 1mm fillet as well for uniformity. 
+</div>
+
+<div class="bodytext">
+  <img src="/02_cutting/010.png" class="imagedoc">
+</div>
+
+<div class="bodytext">
+  <img src="/02_cutting/011.png" class="imagedoc">
+</div>
+
+<div class="bodytext">
+  <img src="/02_cutting/012.png" class="imagedoc">
+  <br><br>
+  Here are the parameters. 
+<br><br>
+Next, we have to redo the triangle piece to the correct size to match the square, so a 50mm version with identical slits to the square is created below.
+</div>
+
+<div class="bodytext">
+  <img src="/02_cutting/013.png" class="imagedoc">
+</div>
+
+<div class="bodytext">
+  <img src="/02_cutting/014.png" class="imagedoc">
+<br><br>
 
 </div>
 
-<img src="https://i.imgur.com/lipocc9.jpg" class="img-fluid" alt="Responsive image">
+<div class="bodytext">
+  Now that the big triangle is finished, we need a snug connector. It should be the width of the square and triangle slits (accounting for kerf). Before kerf, it's 4.60mm. 
+  <br><br>
+  <img src="/02_cutting/015.png" class="imagedoc">
+</div>
 
+<div class="bodytext">
+  Considering the filleting, we're looking at a depth of 5mm, if the connector is filleted too of course. 
+  <br><br>
+  <img src="/02_cutting/016.png" class="imagedoc">
+</div>
+
+<div class="bodytext">
+  We will need prongs on each side with a length of 5mm each, plus enough material in between for stability. 2mm should be enough. 
+<br><br>
+  12mm (5mm x2 + margin) width and 7mm (5mm + margin) length, with a 1mm fillet. 
+</div>
+
+<div class="bodytext">
+  <img src="/02_cutting/017.png" class="imagedoc">
+</div>
+
+<div class="bodytext">
+  Turns out, though, that the fillet is not feasible on a connector of this size, and the dimensions are too small to remain intact as a support structure. 
+</div>
+
+<div class="bodytext">
+  Time for a bigger H. 
+  <br><br>
+  <img src="/02_cutting/018.png" class="imagedoc">
+</div>
+
+<div class="bodytext">
+  Finally, I decided to make the connector more versatile after determining that the structural integrity would remain sound with four slits. 
+  The shape allows for a more flush fit on two of the corners and a firmer fit with a bit more spacing on the other two corners. 
+  <br><br>
+  <img src="/02_cutting/019.png" class="imagedoc">
+</div>
+
+<div class="bodytext">
+  20mm length, 15mm width, 3.8mm depth.
+  <br><br>
+  4mm wide slits, 5.5mm deep slits on two sides, 5mm slits on two other sides. No fillet this time. 
+</div>
+
+<div class="bodytext">
+
+</div>
+
+<div class="bodytext">
+
+</div>
 
 <br>
 <br>
