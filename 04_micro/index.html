@@ -54,37 +54,139 @@
 <div class="spacer"></div>
 
 <div class="bodytext">
-Testing
+  For this week's challenge, we're tasked with programming an Arduino board to do "something." 
+  We'll make that something an LED array -- let's say three LEDs -- and a button that activates some change in behavior of the LEDs.
+  <br><br>
+  First, we'll reference the basics of a button press if/then implementation
 <br><br>
-<a href="https://youtu.be/pKrHTYqm8pw">Link</a>
+<a href=" https://www.arduino.cc/en/Tutorial/BuiltInExamples/Button"> https://www.arduino.cc/en/Tutorial/BuiltInExamples/Button</a>
 
 <br><br>
 <img src="./001.png" class="imagedoc">
+</div>
+<div class="bodytext">
+  <br><br>
+  And we'll use this Arduino project from the project book as a starting point:
+  <br><br>
+  <a href="https://www.eitkw.com/wp-content/uploads/2020/03/Arduino_Projects_Book.pdf"> Arduino Project 2: Spaceship</a>
+  </div>
 
+  <div class="bodytext">
+    <br><br>
+    Here's our sample code from the project:
+    </div>
 
+<div class="bodytext">
 <pre><code class="language-arduino">
-  Code snippet
-  void loop(){
-    int i = 2;
-    int j = 3;
-  }
+  int switchState = 0;    
+  
+  void setup(){ 
+    pinMode(3,OUTPUT);  
+    pinMode(4,OUTPUT);  
+    pinMode(5,OUTPUT);  
+    pinMode(2,INPUT); 
+  } 
+  void loop(){  
+    switchState = digitalRead(2);  // this is a comment
+
+  if (switchState == LOW) {    // the button is not pressed     
+    digitalWrite(3, HIGH); // green LED    
+    digitalWrite(4, LOW);  // red LED    
+    digitalWrite(5, LOW);  // red LED  } 
+
+  else {  // the button is pressed    
+    digitalWrite(3, LOW);     
+    digitalWrite(4, LOW);    
+    digitalWrite(5, HIGH);     
+    delay(250);  // wait for a quarter second    // toggle the LEDs    
+    digitalWrite(4, HIGH);     
+    digitalWrite(5, LOW);    
+    delay(250); // wait for a quarter second  
+  } } // go back to the beginning of the loop
+
   </code></pre> 
 
 </div>
 
 
 <div class="bodytext">
+We're going to change this up. With some modifications for a three button config and three blue LED array, we have:
 <br><br>
+  <pre><code class="language-arduino">
+    int switchState0 = 0; 
+    int switchState1 = 0;
+    int switchState2 = 0;
+    void setup() {
+      // put your setup code here, to run once:
+      pinMode(3,OUTPUT);  
+      pinMode(4,OUTPUT);  
+      pinMode(5,OUTPUT);  
+      pinMode(2,INPUT);
+      pinMode(1,INPUT);
+      pinMode(0,INPUT);
+    }
+    
+    }
+    
+    void loop() {
+      // put your main code here, to run repeatedly:
+      switchState = digitalRead(2);
+    
+      if (switchState == LOW) {    // the button is not pressed     
+        digitalWrite(3, HIGH); // blue LED    
+        digitalWrite(4, HIGH);  // blue LED    
+        digitalWrite(5, HIGH);  // blue LED  } 
+      }
+    
+      else {  // the button is pressed    
+        digitalWrite(3, LOW);     
+        digitalWrite(4, LOW);    
+        digitalWrite(5, HIGH);
+    
+        delay(250);  // wait for a quarter second    
+        // toggle the LEDs    
+        digitalWrite(4, HIGH);     
+        digitalWrite(5, LOW);    
+        delay(250); // wait for a quarter second
+      }
+    }
+    
+  
+    </code></pre> 
+  
+  </div>
 
 </div>
 
 <div class="bodytext">
   <br><br>
-  <img src="./002.png" class="imagedoc">
-
-
+  However, this code is now a redundant mess. Let's begin to fix it. 
 </div>
 
+<div class="bodytext">
+  First, the globals. 
+  <br><br>
+    <pre><code class="language-arduino">
+      int switchState0, switchState1, switchState2 = 0; 
+      </code></pre> 
+    </div>
+
+    <div class="bodytext">
+      Next, a for loop for the setup function:
+      <br><br>
+        <pre><code class="language-arduino">
+          void setup() {    // put your setup code here, to run once:
+            for (int pin = 0; pin < 6; pin++) {
+              if (pin < 3) {
+                pinMode(pin, INPUT);   // Input pins 0-2
+              }
+              else
+                pinMode(pin, OUTPUT);  // Output pins 3-5
+            }
+          }          
+          </code></pre> 
+        </div>
+    
 
 </body>
 
