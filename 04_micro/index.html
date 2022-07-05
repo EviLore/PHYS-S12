@@ -240,9 +240,120 @@ We're going to change this up. With some modifications for a three button config
       </div>
 
 
+<div class="bodytext">
+  We've set some unique functionality now for each button. The top button will turn off the LEDs as a momentary switch.
+   The middle button will flash the LEDs continuously. And the bottom button will flash the LEDs sequentially.
+  <br><br>
+    <pre><code class="language-arduino">
+      int switchState0, switchState1, switchState2 = 0; 
+
+      void setup() {    // put your setup code here, to run once:
+        for (int pin = 0; pin < 6; pin++) {
+          if (pin < 3) {
+            pinMode(pin, INPUT);   // Input pins 0-2
+          }
+          else
+            pinMode(pin, OUTPUT);  // Output pins 3-5
+        }
+      }
+      void loop() {    // put your main code here, to run repeatedly:
+        switchState2 = digitalRead(2);
+        switchState1 = digitalRead(1);
+        switchState0 = digitalRead(0);
+      
+        if (switchState2 == LOW) {    // the button is not pressed 
+          for (int num = 3; num < 6; num++) {
+            digitalWrite(num, HIGH);    
+          }
+        }
+        else if (switchState2 == HIGH) {    // top button pressed    
+          for (int num = 3; num < 6; num++) {
+            digitalWrite(num, LOW);    // turns off all LEDs
+          }
+        }
+        else if (switchState1 == HIGH) {    // mid button pressed
+          for (int num = 3; num < 6; num++) {
+            digitalWrite(num, LOW);    // flashes LEDs
+          }
+          delay(100);
+          for (int num = 3; num < 6; num++) {
+            digitalWrite(num, HIGH);    
+          }
+          delay(100);
+        }
+        else if (switchState0 == HIGH) {    // bot button pressed
+          digitalWrite(5, LOW);  //    runs LEDs in sequence with short delay
+          delay(100);   
+          digitalWrite(4, LOW); 
+          delay(100);   
+          digitalWrite(3, LOW);
+          delay(100);
+          digitalWrite(5, HIGH);
+          delay(100);
+          digitalWrite(4, HIGH);
+          delay(100);
+          digitalWrite(3, HIGH);
+          delay(100);
+        }
+      }
+      </code></pre> 
+    </div>
 
 
 
+    <div class="bodytext">
+      The above is useful as a reference to see a break down of what's going on, but we can of course refactor to address the redundancy:
+      <br><br>
+        <pre><code class="language-arduino">
+          int switchState0, switchState1, switchState2 = 0; 
+
+void setup() {    // put your setup code here, to run once:
+  for (int pin = 0; pin < 6; pin++) {
+    if (pin < 3) {
+      pinMode(pin, INPUT);   // Input pins 0-2
+    }
+    else
+      pinMode(pin, OUTPUT);  // Output pins 3-5
+  }
+}
+void loop() {    // put your main code here, to run repeatedly:
+  switchState2 = digitalRead(2);
+  switchState1 = digitalRead(1);
+  switchState0 = digitalRead(0);
+
+  if (switchState2 == LOW) {    // the button is not pressed 
+    for (int num = 3; num < 6; num++) {
+      digitalWrite(num, HIGH);    
+    }
+  }
+  else if (switchState2 == HIGH) {    // top button pressed    
+    for (int num = 3; num < 6; num++) {
+      digitalWrite(num, LOW);    // turns off all LEDs
+    }
+  }
+  else if (switchState1 == HIGH) {    // mid button pressed
+    for (int num = 3; num < 6; num++) {
+      digitalWrite(num, LOW);    // flashes LEDs
+    }
+    delay(100);
+    for (int num = 3; num < 6; num++) {
+      digitalWrite(num, HIGH);    
+    }
+    delay(100);
+  }
+  else if (switchState0 == HIGH) {    // bot button pressed
+    for (int num = 5; num > 2; num--) {    // flash to low sequentially
+      digitalWrite(num, LOW); 
+      delay(100);
+   }
+  for (int num = 5; num > 2; num--) {    // flash to high sequentially
+    digitalWrite(num, HIGH);
+    delay(100);
+  }
+}
+}
+          </code></pre> 
+        </div>
 
 
 </body>
