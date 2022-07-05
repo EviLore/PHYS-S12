@@ -188,6 +188,46 @@ We're going to change this up. With some modifications for a three button config
         </div>
     
 
+<div class="bodytext">
+  Let's decide on the specifics of our new control functionality before optimizing the code further. So, we now have this, 
+  which uses six pins, three for input (the buttons) and three for output (the blue LEDs):
+  <br><br>
+    <pre><code class="language-arduino">
+int switchState0, switchState1, switchState2 = 0; 
+
+void setup() {
+  // put your setup code here, to run once:
+  for (int pin = 0; pin < 6; pin++) {
+    if (pin < 3) {
+      pinMode(pin, INPUT);   // Input pins 0-2
+    }
+    else
+      pinMode(pin, OUTPUT);  // Output pins 3-5
+  }
+}
+
+void loop() {    // put your main code here, to run repeatedly:
+  switchState2 = digitalRead(2);
+  switchState1 = digitalRead(1);
+  switchState0 = digitalRead(0);
+
+  if (switchState2 == LOW) {    // the button is not pressed     
+    digitalWrite(5, HIGH);    // blue LED  top  
+    digitalWrite(4, HIGH);    // blue LED mid   
+    digitalWrite(3, HIGH);    // blue LED bot  
+    } 
+  }
+
+  else {  // top button is pressed    
+    digitalWrite(5, LOW);     
+    digitalWrite(4, LOW);    
+    digitalWrite(3, LOW);
+    
+  }
+}
+      </code></pre> 
+    </div>
+
 </body>
 
 
