@@ -169,22 +169,49 @@ though it doesn't have as many issues determining the position of objects in spa
 </div>
 
 <div class="bodytext">
-
+Next, we'll move on to slicing it in PrusaSlicer. This will be fairly straightforward, beginning with these basic print settings:
+<br><br>
+<img src="./016.png" class="imagedoc">
 </div>
 
 <div class="bodytext">
-
+Our important decision rests with how to handle the supports. We could implement supports on the build plate only, per the below:
+<br><br>
+<img src="./014.png" class="imagedoc">
 </div>
 
 <div class="bodytext">
+  However, that won't include any support for the free-floating ball joint itself, which will surely fail to produce what we're looking for. 
+  So we'll set support to Everywhere and see if we can safely remove the support material from the joint area after the print. 
+  <br><br>
+  <img src="./015.png" class="imagedoc">
+</div>
 
+<div class="bodytext">
+  3D printer goes brrrr.
+  <br><br>
+  <img src="./3dprint.gif" class="imagedoc">
+</div>
+
+<div class="bodytext">
+  And, finally, voila. 
+  <br><br>
+  <img src="./printedballjoint.gif" class="imagedoc">
 </div>
 
 
-Download links for the files:
-<a download href='./balljoint.f3d'>Balljoint Fusion 360 file <\a>
-  <a download href='./balljoint.stl'>Balljoint STL mesh file <\a>
-    <a download href='./balljoint.gcode'>Balljoint G-Code file<\a>
+<div class="bodytext">
+  <br>
+  Download links for the files:
+  <br><br>
+<a download href='./balljoint.f3d'>Balljoint Fusion 360 file </a>
+  <br>
+  <a download href='./balljoint.stl'>Balljoint STL mesh file </a>
+    <br>
+    <a download href='./balljoint.gcode'>Balljoint G-Code file</a>
+
+</div>
+
 
 </body>
 
