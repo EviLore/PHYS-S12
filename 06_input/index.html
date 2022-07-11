@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+ <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/arduino-light.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/arduino.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script> 
+  
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="../index.html">PHYS S-12: Introduction to Digital Fabrication</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="../index.html">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="../about.html">About</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Projects
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="/PHYS-S12/final/index.html">Final Project</a>
+            <a class="dropdown-item" href="/02_cutting/index.html">Week 02: 2D Design & Cutting</a>
+            <a class="dropdown-item" href="/03_tools/index.html">Week 03: Electronics and Tools</a>
+            <a class="dropdown-item" href="/04_micro/index.html">Week 04: Microcontroller Programming</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#"></a>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#"></a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  
+<body>
+<br>
+<br>
+<div class="mx-auto" style="padding-inline: 100px;"><h4>Week 05: 3D Design & Printing</h4></div>
+
+<div class="spacer"></div>
+
+<div class="bodytext">
+  This week, we're designing and 3D printing an object that can't easily be created using subtractive methods (e.g. laser cutting, CNC). 
+  We're also scanning an object using photogrammetry.
+</div>
+
+<div class="bodytext">
+  First, we'll try scanning my Teenage Engineering OP-1 hipster instrument using PolyCam's photogrammetry functionality via iPhone. 
+</div>
+
+<div class="bodytext">
+  Here's the device in real life, on a table where it will be photogrammetrized: 
+<br><br>
+  <img src="./001.png" class="imagedoc">
+</div>
+
+<div class="bodytext">
+  The first attempt is a little rough, and doesn't model the OP-1's underside, but there's a good amount of detail:
+<br>
+
+  <div class="sketchfab-embed-wrapper"> <iframe title="OP-1 v1" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share width="640" height="480" src="https://sketchfab.com/models/e3d6ec232ab048e7aa0107bab237aacc/embed"> </iframe> <p style="font-size: 13px; font-weight: normal; margin: 5px; color: #4A4A4A;"> <a href="https://sketchfab.com/3d-models/op-1-v1-e3d6ec232ab048e7aa0107bab237aacc?utm_medium=embed&utm_campaign=share-popup&utm_content=e3d6ec232ab048e7aa0107bab237aacc" target="_blank" style="font-weight: bold; color: #1CAAD9;"> OP-1 v1 </a> by <a href="https://sketchfab.com/evilore?utm_medium=embed&utm_campaign=share-popup&utm_content=e3d6ec232ab048e7aa0107bab237aacc" target="_blank" style="font-weight: bold; color: #1CAAD9;"> Tyler </a> on <a href="https://sketchfab.com?utm_medium=embed&utm_campaign=share-popup&utm_content=e3d6ec232ab048e7aa0107bab237aacc" target="_blank" style="font-weight: bold; color: #1CAAD9;">Sketchfab</a></p></div>
+
+</div>
+<div class="bodytext">
+For the second attempt I focused more on getting all sides of the device. The result is more complete, but also has more significant issues in the areas with detail, particularly on the underside:
+<br>
+<div class="sketchfab-embed-wrapper"> <iframe title="OP-1 v2" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share width="640" height="480" src="https://sketchfab.com/models/33ba33f2398b4a7bb5b98d9b7e5e64b2/embed"> </iframe> <p style="font-size: 13px; font-weight: normal; margin: 5px; color: #4A4A4A;"> <a href="https://sketchfab.com/3d-models/op-1-v2-33ba33f2398b4a7bb5b98d9b7e5e64b2?utm_medium=embed&utm_campaign=share-popup&utm_content=33ba33f2398b4a7bb5b98d9b7e5e64b2" target="_blank" style="font-weight: bold; color: #1CAAD9;"> OP-1 v2 </a> by <a href="https://sketchfab.com/evilore?utm_medium=embed&utm_campaign=share-popup&utm_content=33ba33f2398b4a7bb5b98d9b7e5e64b2" target="_blank" style="font-weight: bold; color: #1CAAD9;"> Tyler </a> on <a href="https://sketchfab.com?utm_medium=embed&utm_campaign=share-popup&utm_content=33ba33f2398b4a7bb5b98d9b7e5e64b2" target="_blank" style="font-weight: bold; color: #1CAAD9;">Sketchfab</a></p></div>
+</div>
+
+<div class="bodytext">
+  Out of curiosity we'll try a LIDAR-based scan to see how the result compares to photogrammatry:
+
+  <div class="sketchfab-embed-wrapper"> <iframe title="OP-1 v3 (LIDAR)" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share width="640" height="480" src="https://sketchfab.com/models/0edf797fdcb54f58964cc9a5d1800c2f/embed"> </iframe> <p style="font-size: 13px; font-weight: normal; margin: 5px; color: #4A4A4A;"> <a href="https://sketchfab.com/3d-models/op-1-v3-lidar-0edf797fdcb54f58964cc9a5d1800c2f?utm_medium=embed&utm_campaign=share-popup&utm_content=0edf797fdcb54f58964cc9a5d1800c2f" target="_blank" style="font-weight: bold; color: #1CAAD9;"> OP-1 v3 (LIDAR) </a> by <a href="https://sketchfab.com/evilore?utm_medium=embed&utm_campaign=share-popup&utm_content=0edf797fdcb54f58964cc9a5d1800c2f" target="_blank" style="font-weight: bold; color: #1CAAD9;"> Tyler </a> on <a href="https://sketchfab.com?utm_medium=embed&utm_campaign=share-popup&utm_content=0edf797fdcb54f58964cc9a5d1800c2f" target="_blank" style="font-weight: bold; color: #1CAAD9;">Sketchfab</a></p></div>
+<br><br>
+As we can see, it produces an overall inferior model, not at all usable with its melted consistency, 
+though it doesn't have as many issues determining the position of objects in space and keeping them discete. We'll stick with photogrammatry for detailed model work. 
+
+</div>
+
+<div class="bodytext">
+  <br><br>
+  Now, let's move on to designing a 3D model in Fusion 360 and making our first 3D print. Exciting!
+</div>
+
+<div class="bodytext">
+  We want to design something that is not easily possible through subtractive fabrication methods, so one of the first thing that comes to mind is an enclosed ball joint. 
+  We'll reference this tutorial as a starting point: <a href=" https://www.instructables.com/Ball-Joint-With-Fusion-360/"> https://www.instructables.com/Ball-Joint-With-Fusion-360/</a> 
+
+</div>
+
+<div class="bodytext">
+  Starting by creating a 10mm sphere intersecting with a cylinder of 5mm diameter an 15mm depth. 
+  <br>
+  <img src="./002.png" class="imagedoc">
+</div>
+
+<div class="bodytext">
+  Next, we'll hollow out the sphere and cut off one side of it using the Split Body tool.
+  <br>
+  <img src="./003.png" class="imagedoc">
+</div>
+
+<div class="bodytext">
+  <img src="./004.png" class="imagedoc">
+</div>
+
+<div class="bodytext">
+  <img src="./005.png" class="imagedoc">
+</div>
+
+<div class="bodytext">
+  Cutting out slits in the semisphere as portholes to see what's going on internally. 
+  <br>
+  <img src="./006.png" class="imagedoc">
+</div>
+
+<div class="bodytext">
+  <img src="./007.png" class="imagedoc">
+</div>
+
+<div class="bodytext">
+  Rotate the block 90 degrees to make two more symmetrical cuts.
+  <br>
+  <img src="./008.png" class="imagedoc">
+</div>
+
+<div class="bodytext">
+  <img src="./009.png" class="imagedoc">
+</div>
+
+<div class="bodytext">
+  Attach the cylinder as before, and it's coming together. 
+  <br>
+  <img src="./010.png" class="imagedoc">
+</div>
+
+<div class="bodytext">
+  Now we'll position the fully spherical internal joint correctly within the outer shell using the move tool. 
+  <br><br>
+  However, the current form is not really ready to be called an additive-only fabrication solution, since it looks like the ball joint would be able to pop out. 
+  So let's modify the outer shell by extending it further. 
+  <br>
+  <img src="./011.png" class="imagedoc">
+</div>
+
+<div class="bodytext">
+  Using the extrude function on the four segments of the semi-sphere, we can extend it so that the ball joint is permanently enclosed. 
+  <br>
+  <img src="./012.png" class="imagedoc">
+</div>
+
+<div class="bodytext">
+  And we're done with the design process. Export to to STL with these settings:
+  <br><br>
+  <img src="./013.png" class="imagedoc">
+</div>
+
+<div class="bodytext">
+Next, we'll move on to slicing it in PrusaSlicer. This will be fairly straightforward, beginning with these basic print settings:
+<br><br>
+<img src="./016.png" class="imagedoc">
+</div>
+
+<div class="bodytext">
+Our important decision rests with how to handle the supports. We could implement supports on the build plate only, per the below:
+<br><br>
+<img src="./014.png" class="imagedoc">
+</div>
+
+<div class="bodytext">
+  However, that won't include any support for the free-floating ball joint itself, which will surely fail to produce what we're looking for. 
+  So we'll set support to Everywhere and see if we can safely remove the support material from the joint area after the print. 
+  <br><br>
+  <img src="./015.png" class="imagedoc">
+</div>
+
+<div class="bodytext">
+  3D printer goes brrrr.
+  <br><br>
+  <img src="./3dprint.gif" class="imagedoc">
+</div>
+
+<div class="bodytext">
+  And, finally, voila. 
+  <br><br>
+  <img src="./printedballjoint.gif" class="imagedoc">
+</div>
+
+
+<div class="bodytext">
+  <br>
+  Download links for the files:
+  <br><br>
+<a download href='./balljoint.f3d'>Balljoint Fusion 360 file </a>
+  <br>
+  <a download href='./balljoint.stl'>Balljoint STL mesh file </a>
+    <br>
+    <a download href='./balljoint.gcode'>Balljoint G-Code file</a>
+
+</div>
+
+
+</body>
+
+
+</html>
