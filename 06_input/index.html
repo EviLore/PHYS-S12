@@ -128,20 +128,82 @@ Between fingers temp reading: 21. (approximately 98f)
 
 <div class="bodytext">
   <br><br>
-  Now let's take a look at the handmade sensor using velostat. Here's the circuit:
+  Now let's take a look at the handmade sensor using velostat. Here's the circuit with two pieces of velostat connected:
   <br><br>
   <img src="./002.jpg" class="imagedoc">
+  <br><br>
+
 </div>
 
 <div class="bodytext">
-  
+  And an overview:
+  <br><br>
+  <img src="./003.jpg" class="imagedoc">
 </div>
 
 <div class="bodytext">
+  Taking different pressure readings by using my fingers, we have these results:
+ <br><br>
+ No pressure/bend, approximately 600
+ <br><br>
+ Light pressure, 546
+ <br><br>
+ Medium pressure/flex, 450
+ <br><br>
+ High pressure/flex, 400
+ <br><br><br>
+ As such we can calibrate the arduino to interpret the pressure in those ranges. 
+ </div>
+
+<div class="bodytext">
+  I wrote this code to handle the velostat:
+  <br><br>
+  <pre><code class="language-arduino">
+int sensorPin = A0;    // select the input pin for the potentiometer
+int ledPin = LED_BUILTIN;      // select the pin for the LED
+int sensorValue = 0;  // variable to store the value coming from the sensor
+String sensorOutput = "Low";
+
+void setup() {
+  // declare the ledPin as an OUTPUT:
+  pinMode(ledPin, OUTPUT);
+  Serial.begin(9600);  
+}
+
+void loop() {
+  // read the value from the sensor:
+  sensorValue = analogRead(sensorPin);
+  // stop the program for <sensorValue> milliseconds:
+  delay(sensorValue);
+
+  if (sensorValue > 550){
+    sensorOutput = "Low";
+  }
+  else if (sensorValue > 450){
+    sensorOutput = "Medium";
+  }
+  else {
+    sensorOutput = "High";
+  }
+
+  Serial.print("Pressure: ");
+  Serial.println(sensorOutput + " (" + sensorValue + ")");
   
-<br><br>
-  <img src="./001.png" class="imagedoc">
+}
+    </code></pre> 
+  
+  </div>
+
+
+<div class="bodytext">
+  In action:
+  <br><br>
+  <img src="./velostat.gif" class="imagedoc">
 </div>
+
+
+
+
 
 
 </div>
