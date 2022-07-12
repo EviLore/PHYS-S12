@@ -142,7 +142,7 @@ Between fingers temp reading: 21. (approximately 98f)
 </div>
 
 <div class="bodytext">
-  Taking different pressure readings by using my fingers, we have these results:
+  Taking different manual pressure readings by using my fingers, we have these results:
  <br><br>
  No pressure/bend, approximately 600
  <br><br>
@@ -156,33 +156,28 @@ Between fingers temp reading: 21. (approximately 98f)
  </div>
 
 <div class="bodytext">
-  I wrote this code to handle the velostat:
+  I wrote this code to handle the velostat with appropriate pressure ranges:
   <br><br>
   <pre><code class="language-arduino">
 int sensorPin = A0;    // select the input pin for the potentiometer
-int ledPin = LED_BUILTIN;      // select the pin for the LED
 int sensorValue = 0;  // variable to store the value coming from the sensor
 String sensorOutput = "Low";
 
 void setup() {
-  // declare the ledPin as an OUTPUT:
-  pinMode(ledPin, OUTPUT);
-  Serial.begin(9600);  
+  Serial.begin(9600);  // serial text
 }
 
 void loop() {
-  // read the value from the sensor:
-  sensorValue = analogRead(sensorPin);
-  // stop the program for <sensorValue> milliseconds:
-  delay(sensorValue);
+  sensorValue = analogRead(sensorPin);   // read the value from the sensor
+  delay(sensorValue);  //  stop the program for <sensorValue> milliseconds:
 
-  if (sensorValue > 550){
+  if (sensorValue > 550){  // low pressure
     sensorOutput = "Low";
   }
-  else if (sensorValue > 450){
+  else if (sensorValue > 450){  // medium pressure
     sensorOutput = "Medium";
   }
-  else {
+  else {  // high pressure
     sensorOutput = "High";
   }
 
