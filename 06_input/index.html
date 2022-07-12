@@ -54,7 +54,83 @@
 <div class="spacer"></div>
 
 <div class="bodytext">
+  This week we're using a premade sensor to make measurements, then building our own sensor and calibrating it. 
+</div>
+
+<div class="bodytext">
+  We'll start with a thermistor, which measures temperature change. Here's the circuit: 
+  <br><br>
+  <img src="./001.jpg" class="imagedoc">
+  <br><br>
+  We're using 5v power, a 10k resistor, then going into the A0 analog input pin, then to the thermistor, then to ground.
+</div>
+
+<div class="bodytext">
+  We'll reference this thermistor sample code from Adafruit: https://learn.adafruit.com/thermistor/using-a-thermistor
+</div>
+
+<div class="bodytext">
+  <pre><code class="language-arduino">
+    // SPDX-FileCopyrightText: 2011 Limor Fried/ladyada for Adafruit Industries
+//
+// SPDX-License-Identifier: MIT
+
+// thermistor-1.ino Simple test program for a thermistor for Adafruit Learning System
+// https://learn.adafruit.com/thermistor/using-a-thermistor by Limor Fried, Adafruit Industries
+// MIT License - please keep attribution and consider buying parts from Adafruit
+
+// the value of the 'other' resistor
+#define SERIESRESISTOR 10000    
+ 
+// What pin to connect the sensor to
+#define THERMISTORPIN A0 
+ 
+void setup(void) {
+  Serial.begin(9600);
+}
+ 
+void loop(void) {
+  float reading;
+  float average;
+
+  for (int i=0; i< 10; i++) {
+   average += analogRead(THERMISTORPIN);
+   delay(10);
+  }
+  average /= 10;
   
+  reading = analogRead(THERMISTORPIN);
+ 
+  Serial.print("Analog reading "); 
+  Serial.println(reading);
+ 
+  // convert the value to resistance
+  reading = (1023 / reading)  - 1;     // (1023/ADC - 1) 
+  reading = SERIESRESISTOR / reading;  // 10K / (1023/ADC - 1)
+  Serial.print("Thermistor resistance "); 
+  Serial.println(reading);
+ 
+  delay(1000);
+}
+    </code></pre> 
+  
+  </div>
+
+
+
+<div class="bodytext">
+  Our readings are as follows.
+<br><br>
+Room temperature: analog reading 33.  (approximately 72f)
+<br><br>
+Between fingers temp reading: 21. (approximately 98f)
+</div>
+
+<div class="bodytext">
+  <br><br>
+  Now let's take a look at the handmade sensor using velostat. Here's the circuit:
+  <br><br>
+  <img src="./002.jpg" class="imagedoc">
 </div>
 
 <div class="bodytext">
@@ -70,6 +146,25 @@
 
 </div>
 
+
+<div class="bodytext">
+  
+<br><br>
+  <img src="./001.png" class="imagedoc">
+</div>
+
+<div class="bodytext">
+  
+<br><br>
+  <img src="./001.png" class="imagedoc">
+</div>
+
+<div class="bodytext">
+  <pre><code class="language-arduino">
+    Code
+    </code></pre> 
+  
+  </div>
 
 </body>
 
