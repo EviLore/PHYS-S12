@@ -16,6 +16,10 @@ p {
   align-items: center;
 }
 
+#coding{
+background-color: gainsboro;
+}
+
 .margin {margin-bottom: 15px;}
 
 .container-fluid {
