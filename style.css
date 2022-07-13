@@ -1,3 +1,4 @@
+
 body {
     font: 20px Montserrat, sans-serif;
     line-height: 1.8;
@@ -19,7 +20,6 @@ p {
 
 .container-fluid {
   padding: 0px;
-  /*padding-bottom: 70px;*/
 }
 
 .navbar {
@@ -48,4 +48,8 @@ p {
   width: 100%;
   max-width: 450px;
   height: auto;
+}
+
+#homenav {
+  font-size: 20px;
 }
