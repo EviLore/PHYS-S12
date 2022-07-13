@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 
- <link rel="stylesheet" href="./style.css">
+  <link href="{{ '/style.css' | relative_url }}" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
@@ -33,7 +34,7 @@
 <body>
 <br>
 <br>
-<div class="mx-auto" style="padding-inline: 100px;"><h4>Week 06: Electronic Input Devices</h4></div>
+<div class="bodytext"><h4>Week 06: Electronic Input Devices</h4></div>
 
 <div class="spacer"></div>
 
@@ -43,18 +44,20 @@
 
 <div class="bodytext">
   We'll start with a thermistor, which measures temperature change. Here's the circuit: 
-  <br><br>
+  </div>
+  <p>
   <img src="./001.jpg" class="imagedoc">
-  <br><br>
+  </p>
+  <p>
   We're using 5v power, a 10k resistor, then going into the A0 analog input pin, then to the thermistor, then to ground.
+  </p>
+
+<div class="bodytext">
+  We'll reference this thermistor sample code from Adafruit:  <a href="https://learn.adafruit.com/thermistor/using-a-thermistor"> https://learn.adafruit.com/thermistor/using-a-thermistor</a>
 </div>
 
 <div class="bodytext">
-  We'll reference this thermistor sample code from Adafruit: https://learn.adafruit.com/thermistor/using-a-thermistor
-</div>
-
-<div class="bodytext">
-  <pre><code class="language-arduino">
+  <pre><code class="language-arduino" id="coding">
     // SPDX-FileCopyrightText: 2011 Limor Fried/ladyada for Adafruit Industries
 //
 // SPDX-License-Identifier: MIT
@@ -103,46 +106,51 @@ void loop(void) {
 
 
 <div class="bodytext">
-  Our readings are as follows.
-<br><br>
-Room temperature: analog reading 33.  (approximately 72f)
-<br><br>
-Between fingers temp reading: 21. (approximately 98f)
+  Our readings are as follows:
 </div>
+<p>
+Room temperature: analog reading 33.  (approximately 72f)
+
+<br>Between fingers temp reading: 21. (approximately 98f)
+</p>
 
 <div class="bodytext">
-  <br><br>
+  
   Now let's take a look at the handmade sensor using velostat. Here's the circuit with two pieces of velostat connected:
-  <br><br>
+  </div>
+  <p>
   <img src="./002.jpg" class="imagedoc">
-  <br><br>
+  </p>
 
-</div>
 
 <div class="bodytext">
   And an overview:
-  <br><br>
+  </div>
+  <p>
   <img src="./003.jpg" class="imagedoc">
-</div>
+  </p>
 
 <div class="bodytext">
   Taking different manual pressure readings by using my fingers, we have these results:
- <br><br>
- No pressure/bend, approximately 600
- <br><br>
- Light pressure, 546
- <br><br>
- Medium pressure/flex, 450
- <br><br>
- High pressure/flex, 400
- <br><br><br>
- As such we can calibrate the arduino to interpret the pressure in those ranges. 
  </div>
+ <p>
+ No pressure/bend, approximately 600
+<br>
+Light pressure, 546
+<br>
+ Medium pressure/flex, 450
+ <br>
+ High pressure/flex, 400
+ </p>
+
+ <p>As such we can calibrate the arduino to interpret the pressure in those ranges. 
+ </p>
 
 <div class="bodytext">
   I wrote this code to handle the velostat with appropriate pressure ranges:
-  <br><br>
-  <pre><code class="language-arduino">
+  </div>
+  <div class="bodytext">
+  <pre><code class="language-arduino" id="coding">
 int sensorPin = A0;    // select the input pin for the potentiometer
 int sensorValue = 0;  // variable to store the value coming from the sensor
 String sensorOutput = "Low";
@@ -176,14 +184,10 @@ void loop() {
 
 <div class="bodytext">
   In action:
-  <br><br>
+  </div>
+  <p>
   <img src="./velostat.gif" class="imagedoc">
-</div>
-
-
-
-
-
+  </p>
 
 </div>
 
