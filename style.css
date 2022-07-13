@@ -36,6 +36,10 @@ p {
   align-items: center;
 }
 
+.bodytexthome {
+  padding-inline: 0px !important;
+}
+
 .spacer {
   padding: 20px;
 }
@@ -51,5 +55,6 @@ p {
 }
 
 #homenav {
-  font-size: 20px;
+  font-size: larger;
+  padding: 0px;
 }
