@@ -238,6 +238,107 @@ void loop() {
    
   </code></pre></div>
 
+
+<p>Maybe we can make it slightly more musical by setting a note duration through a state machine delay.</p>
+
+
+<div class="bodytext">
+  <pre><code class="language-arduino" id="coding">
+
+    int buzzerPin = 10;
+    int DURATION = 750;
+    String flexOutput = "Low";
+    int octave = 0;
+    unsigned long previousMillis = 0;
+  
+    class Flexor 
+    {
+      // Class variables
+      int flexPin;
+      int flexValue;
+      String flexFlag;
+    ;
+  
+      public: 
+      Flexor(int pin, int value, String flag)
+      {
+        flexPin = pin;
+        flexValue = value;
+        flexFlag = flag;
+      }
+    
+      void Update()
+      {
+      
+        // read the value from the sensor:
+        flexValue = analogRead(flexPin);
+        unsigned long currentMillis = millis();  // Time counter
+        unsigned long serialMillis = 0;
+  
+        if (currentMillis - serialMillis >= 1000) {
+        serialMillis = currentMillis;
+        Serial.println(flexFlag);
+        Serial.print(" Value: ");
+        Serial.println(flexValue);
+        }
+  
+  
+  if (flexFlag == "pitch"){
+  
+      if (currentMillis - previousMillis >= DURATION) {  // Time
+        previousMillis = currentMillis;
+        // Put tones here
+        if (flexValue > 550){
+          flexOutput = "Low";
+          tone(buzzerPin, flexValue + octave, DURATION);
+    }
+        else if (flexValue > 450){
+          flexOutput = "Medium";
+          tone(buzzerPin, flexValue + octave, DURATION);
+    }
+        else {
+          flexOutput = "High";
+          tone(buzzerPin, flexValue + octave, DURATION);
+    }
+        
+        
+    }
+    
+  }
+  
+  else if (flexFlag == "octave"){
+    if (flexValue > 750){
+      octave = 500;
+    }
+  
+    else if (flexValue > 650){
+      octave = 1000;
+    }
+  
+    else {
+      octave = 1500;
+    }
+  }
+      }
+    
+    };
+      
+  
+    Flexor flex1(A0, 0, "pitch");
+    Flexor flex2(A1, 0, "octave");
+    
+    void setup()
+    {
+      Serial.begin(9600); 
+    }
+    
+    void loop()
+    {
+      flex1.Update();
+      flex2.Update();
+    }
+  </code></pre></div>
+
 </body>
 
 
