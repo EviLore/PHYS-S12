@@ -152,6 +152,91 @@ void loop() {
 
 
 
+<p>But, we need to do something interesting with the second flex sensor. So let's experiment with some new functionality that defines
+  a pitch option and an interval option for each respective flex sensor. 
+</p>
+
+
+<div class="bodytext">
+  <pre><code class="language-arduino" id="coding">
+
+    int buzzerPin = 10;
+    int duration = 500;
+    String flexOutput = "Low";
+  
+    class Flexor 
+    {
+      // Class variables
+      int flexPin;
+      int flexValue;
+      String flexFlag;
+    ;
+  
+      public: 
+      Flexor(int pin, int value, String flag)
+      {
+        flexPin = pin;
+        flexValue = value;
+        flexFlag = flag;
+      }
+    
+      void Update()
+      {
+  
+      // read the value from the sensor:
+    flexValue = analogRead(flexPin);
+  
+  if (flexFlag == "pitch"){
+  
+    if (flexValue > 550){
+      flexOutput = "Low";
+      tone(buzzerPin, flexValue, duration);
+    }
+    else if (flexValue > 450){
+      flexOutput = "Medium";
+      tone(buzzerPin, flexValue, duration);
+    }
+    else {
+      flexOutput = "High";
+      tone(buzzerPin, flexValue, duration);
+    }
+    Serial.print(flexPin);
+    Serial.print("Value: ");
+    Serial.println(flexValue);
+  }
+  
+  else if (flexFlag == "interval"){
+    if (flexValue > 550){
+      duration = 500;
+    }
+  
+    else if (flexValue > 450){
+      duration = 1000;
+    }
+  
+    else {
+      duration = 1500;
+    }
+  }
+      }
+    
+    };
+      
+  
+    Flexor flex1(A0, 0, "pitch");
+    Flexor flex2(A1, 0, "interval");
+    
+    void setup()
+    {
+    }
+    
+    void loop()
+    {
+      flex1.Update();
+      flex2.Update();
+    }
+  </code></pre></div>
+
 </body>
 
 
