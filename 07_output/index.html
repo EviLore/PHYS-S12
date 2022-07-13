@@ -33,14 +33,15 @@
   </nav>
   
 <body>
-<br>
-<br>
+<p></p>>
 <div class="bodytext"><h4>Week 07: Electronic Output Devices</h4></div>
 
 <p></p>
 
-<p></p>
+<p>This week we need to use a new output device and write a program that integrates an input and output. 
+  Then, we'll use an oscilloscope to measure the time domain at which our output is operating. </p>
 
+<p>We're going to set up two velostat sensors, one to control delay, one to control buzzer pitch:</p>
 
 <div class="bodytext">
   <pre><code class="language-arduino" id="coding">
@@ -83,10 +84,73 @@ void loop() {
   delay(sensorValue2*2);
 }
 
-    </code></pre> 
+    </code></pre> </div>
+
+
+<p>Now let's refactor the code to use C++ classes:</p>
+
+
+<div class="bodytext">
+  <pre><code class="language-arduino" id="coding">
+
+  int buzzerPin = 10;
+  int DURATION = 500;
+  String flexOutput = "Low";
+
+  class Flexor 
+  {
+    // Class variables
+    int flexPin;
+    int flexValue;
+  ;
+
+    public: 
+    Flexor(int pin, int value)
+    {
+      flexPin = pin;
+      flexValue = value;
+    }
   
-  </div>
-</div>
+    void Update()
+    {
+
+    // read the value from the sensor:
+  flexValue = analogRead(flexPin);
+
+  if (flexValue > 550){
+    flexOutput = "Low";
+    tone(buzzerPin, flexValue, DURATION);
+  }
+  else if (flexValue > 450){
+    flexOutput = "Medium";
+    tone(buzzerPin, flexValue, DURATION);
+  }
+  else {
+    flexOutput = "High";
+    tone(buzzerPin, flexValue, DURATION);
+  }
+  Serial.print(flexValue);
+  Serial.print("Value: ");
+  Serial.println(flexValue);
+}
+  };
+
+  Flexor flex1(A0, 0);
+  Flexor flex2(A1, 0);
+  
+  void setup()
+  {
+  }
+  
+  void loop()
+  {
+    flex1.Update();
+    flex2.Update();
+  }
+
+    </code></pre></div>
+
+
 
 </body>
 
