@@ -41,10 +41,10 @@
 
     function turnOn(){
         console.log("turning on");
+        ref++;
         ref.update({
-            "LED_STATUS": "ON"
-        });
-    }
+            "MOVIEDB": FieldValue.increment(1)
+    });
 
     function turnOff(){
         console.log("turning off");
