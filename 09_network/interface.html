@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PHYS S-12: Introduction to Digital Fabrication</title>
+    <title>PHYSCI 70: Introduction to Digital Fabrication</title>
 </head>
 
 <body>
@@ -19,7 +19,7 @@
 
     <script>
     // Your web app's Firebase configuration
-    var firebaseConfig = {
+    const firebaseConfig = {
         apiKey: "AIzaSyAI__rPu-RPccOn2o0Z9mjc_NqUMWcqGLQ",
         authDomain: "phys-s-12-esp-link.firebaseapp.com",
         databaseURL: "https://phys-s-12-esp-link-default-rtdb.firebaseio.com",
@@ -41,10 +41,10 @@
 
     function turnOn(){
         console.log("turning on");
-        ref++;
         ref.update({
-            "MOVIEDB": FieldValue.increment(1)
-    });
+            "LED_STATUS": "ON"
+        });
+    }
 
     function turnOff(){
         console.log("turning off");
