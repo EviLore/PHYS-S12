@@ -3,19 +3,29 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PHYSCI 70: Introduction to Digital Fabrication</title>
+    <title>PHYS S-12: Introduction to Digital Fabrication</title>
+    
 </head>
 
 <body>
-    <button id="turn-on" name="turnon">Turn On </button>
-    <button id="turn-off" name="turnoff">Turn Off </button>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="./interface.js"></script>
+    <button id="turn-on" name="turnon">Next Title </button>
+    <button id="turn-off" name="turnoff">Previous Title </button>
+
+
+    <div>
+        <div id="counter">1000</div>
+        <button id="increase" type="button">Increase</button>
+         <button id="decrease" type="button">Decrease</button>
+      </div> 
 
     <!-- The core Firebase JS SDK is always required and must be listed first -->
-    <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-app.js"></script&gt;
+    <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-app.js"></script>
 
     <!-- TODO: Add SDKs for Firebase products that you want to use
          https://firebase.google.com/docs/web/setup#available-libraries -->
-    <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-database.js"></script&gt;
+    <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-database.js"></script>
 
     <script>
     // Your web app's Firebase configuration
@@ -53,5 +63,10 @@
         });
     }
     </script>
+
+
+
+
+
 
 </body>
