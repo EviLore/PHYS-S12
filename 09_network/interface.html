@@ -11,14 +11,13 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="./interface.js"></script>
 
-
     <h1>Movie Database Remote Display</h1>
-
     <div>
         <div id="counter">500</div>
         <button id="increase" type="button">Increase</button>
          <button id="decrease" type="button">Decrease</button>
       </div> 
+
 
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-app.js"></script>
@@ -93,6 +92,7 @@
         saveCall(api_title);
         movieTitle = obj["title"];
         movieRelease = obj["release_date"];
+        movieFile = obj["id"];
         ref.update({
             "counter": {api_title},
             "title": {movieTitle},
@@ -100,6 +100,8 @@
         })
         counter.addEventListener('click', function handleClick() {
         counter.textContent = {api_title};
+        document.getElementById("counter").innerHTML = movieFile;
+        
 });
 
     }
