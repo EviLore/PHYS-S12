@@ -581,7 +581,214 @@ void loop() {
   </code></pre></div>
 
 
+<p>Now every time we press the increase or decrease buttons, a new api call will be performed, pulling up the data for the item in question:</p>
 
+
+<p> <img src="./010.jpg" class="imagedoc"></p>
+
+<p>After much experimentation, clicking the button up and down now makes an API call and saves the number, the title, and the release date to the Firebase database. Home stretch:
+</p>
+
+<p> <img src="./011.jpg" class="imagedoc"></p>
+
+<p> <img src="./012.jpg" class="imagedoc"></p>
+
+
+
+<p>Here's how the web interface looks:</p>
+
+<p> <img src="./013.jpg" class="imagedoc"></p>
+
+
+
+<p>And here's the live view from Firebase:</p>
+
+<p> <img src="./014.jpg" class="imagedoc"></p>
+
+
+<p>Finally, after many revisions, it works! The final issue was that any extra characters from the previous listing would persist on update to the next listing, 
+  so I created an empty string variable to concatenate with the movie title and release date variables for sending to the LCD printout.  </p>
+
+
+<p>Here's the ESP32 code:</p>
+
+<div class="bodytext">
+  <pre><code class="language-arduino" id="coding">
+#include <WiFi.h>                                 // esp32 library
+#include <FirebaseESP32.h>                        // firebase library
+#include <LiquidCrystal.h>                        // LCD library
+
+#define FIREBASE_HOST "phys-s-12-esp-link-default-rtdb.firebaseio.com"  // the project name address from firebase id
+#define FIREBASE_AUTH "kl0A0i0B2T8X6QHxV1iTbO0hR8KZOv92kaKn1cQc"                                // the secret key generated from firebase
+//#define WIFI_SSID "MAKERSPACE"                                    // input your home or public wifi name
+//#define WIFI_PASSWORD "12345678"                                // password of wifi ssid
+
+#define WIFI_SSID "TylerM"                                    // input your home or public wifi name
+#define WIFI_PASSWORD "tyler123"   
+
+String movieTitle;
+String movieRelease;
+int thecount;
+
+LiquidCrystal lcd(19, 23, 18, 17, 16, 15);    // initialize the library with the numbers of the interface pins
+
+int fireInt;                                          // led status received from firebase
+
+//Define FirebaseESP32 data object
+FirebaseData firebaseData;
+
+void setup() {
+  Serial.begin(115200);
+  delay(1000);
+  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);                          // try to connect with wifi
+  
+  lcd.begin(16, 2);
+  // Print a message to the LCD.
+  // lcd.print("Tyler's LCD");
+
+  Serial.print("Connecting to ");
+  Serial.print(WIFI_SSID);
+  while (WiFi.status() != WL_CONNECTED) {
+    Serial.print(".");
+    delay(500);
+  }
+
+  Serial.println();
+  Serial.print("Connected to ");
+  Serial.println(WIFI_SSID);
+  Serial.print("IP Address is : ");
+  Serial.println(WiFi.localIP());                                // print local IP address
+  Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);                  // connect to firebase
+  Firebase.reconnectWiFi(true);
+}
+
+void loop() {
+  
+    Firebase.get(firebaseData, "/title/movieTitle"); 
+    movieTitle = firebaseData.stringData();
+    Serial.print("Movie Title: ");
+    Serial.println(movieTitle);
+    
+    Firebase.get(firebaseData, "/release/movieRelease");
+    movieRelease = firebaseData.stringData();
+    Serial.print("Release Date: ");
+    Serial.println(movieRelease);
+
+    //Firebase.get(firebaseData, "/MOVIEDB");
+    //thecount = firebaseData.intData();   
+    //Serial.print("The count: ");
+    //Serial.println(thecount);
+
+
+  // set the cursor to column 0, line 1
+  // (note: line 1 is the second row, since counting begins with 0):
+  lcd.setCursor(0, 0);
+  // print the number of seconds since reset:
+  lcd.print(movieTitle);
+
+  lcd.setCursor(0, 1);
+  lcd.print(movieRelease);
+
+
+  delay(250);     
+}
+
+  </code></pre></div>
+
+<p>And here's the remote interface html/js:</p>
+
+<p> <img src="./015.jpg" class="imagedoc"></p>
+
+<div class="bodytext">
+  <pre><code class="language-arduino" id="coding">
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+(script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-app.js">(/script)
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+(script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-database.js">(/script)
+(script)
+// Your web app's Firebase configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyAI__rPu-RPccOn2o0Z9mjc_NqUMWcqGLQ",
+    authDomain: "phys-s-12-esp-link.firebaseapp.com",
+    databaseURL: "https://phys-s-12-esp-link-default-rtdb.firebaseio.com",
+
+    projectId: "phys-s-12-esp-link",
+    storageBucket: "phys-s-12-esp-link.appspot.com",
+    messagingSenderId: "399805027106",
+    appId: "1:399805027106:web:6457767d015503153a0b7b"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+// Get a database reference to our blog
+var ref = firebase.database().ref("/");
+var movieFile;
+var movieTitle;
+var movieRelease;
+
+var counter = document.getElementById('counter');
+var obj;
+
+let api_url1 = "https://api.themoviedb.org/3/movie/";
+let api_title = 500;
+let api_url3 = "?api_key=4926f95e3e11fe441fa99a7527200f63";
+
+  // create function for api call
+function apiCall(title){
+    let final_url = api_url1 + title + api_url3;
+    return fetch(final_url)
+        .then(response => response.json())
+        .then(data => console.log(data))
+        
+}
+
+// save json to file
+function saveCall(title){
+    let final_url = api_url1 + title + api_url3;
+    return fetch(final_url)
+        .then(res => res.json())
+        .then(data => obj = data)
+        .then(() => console.log(obj))
+        .then(() => console.log(obj["title"]))
+}
+
+
+
+// make the buttons call the function below 
+document.getElementById('increase').addEventListener('click', plusone, false);
+document.getElementById('decrease').addEventListener('click', minusone, false);
+
+function plusone(){
+    console.log("Plus one");
+    api_title++;
+    saveCall(api_title);
+    movieTitle = obj["title"];
+    movieRelease = obj["release_date"];
+    ref.update({
+        "counter": {api_title},
+        "title": {movieTitle},
+        "release": {movieRelease}
+    })
+    counter.addEventListener('click', function handleClick() {
+    counter.textContent = {api_title};
+});
+}
+function minusone(){
+    console.log("Minus one");
+    api_title--;
+    apiCall(api_title);
+    ref.update({
+        "counter": {api_title}
+    });
+}
+
+  </code></pre></div>
+
+
+<p>I can't take video from my phone while the ESP32 is tethered, so this is a placeholder until I get back to the lab:</p>
+
+<p> <img src="./016.jpg" class="imagedoc"></p>
 
 
 </body>
