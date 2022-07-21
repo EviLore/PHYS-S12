@@ -98,7 +98,7 @@ void loop() {
 <p>Source: <a href="https://www.circuitschools.com/interfacing-16x2-lcd-module-with-esp32-with-and-without-i2c/">https://www.circuitschools.com/interfacing-16x2-lcd-module-with-esp32-with-and-without-i2c/</a></p>
 
 
-<p>The pins are also different, so we'll need to reference the right pinout sheet:</p>
+<p>The pins are also different, so we'll need to cross-reference the right pinout sheet:</p>
 
 <p> <img src="./005.jpg" class="imagedoc"></p>
 
@@ -139,6 +139,448 @@ void loop() {
 <p>It's a success:</p>
 
 <p> <img src="./003.jpg" class="imagedoc"></p>
+
+<p>Now we have a functional LCD screen that can print arbitrary text! </p>
+
+<p>Next, let's connect to our Firebase database and change some values.</p>
+
+<p>This example code from our class tutorial works when plugging in our Firebase info:</p>
+
+<div class="bodytext">
+  <pre><code class="language-arduino" id="coding">
+#include <WiFi.h>                                 // esp32 library
+#include <FirebaseESP32.h>                        // firebase library
+
+#define FIREBASE_HOST "phys-s-12-esp-link-default-rtdb.firebaseio.com"  // the project name address from firebase id
+#define FIREBASE_AUTH "kl0A0i0B2T8X6QHxV1iTbO0hR8KZOv92kaKn1cQc"                                // the secret key generated from firebase
+#define WIFI_SSID "MAKERSPACE"                                    // input your home or public wifi name
+#define WIFI_PASSWORD "12345678"                                // password of wifi ssid
+
+String fireString = "";                                          // led status received from firebase
+int ledpin = 5;
+
+//Define FirebaseESP32 data object
+FirebaseData firebaseData;
+
+void setup() {
+Serial.begin(115200);
+delay(1000);
+pinMode(ledpin, OUTPUT);
+WiFi.begin(WIFI_SSID, WIFI_PASSWORD);                          // try to connect with wifi
+
+Serial.print("Connecting to ");
+Serial.print(WIFI_SSID);
+while (WiFi.status() != WL_CONNECTED) {
+  Serial.print(".");
+  delay(500);
+}
+
+Serial.println();
+Serial.print("Connected to ");
+Serial.println(WIFI_SSID);
+Serial.print("IP Address is : ");
+Serial.println(WiFi.localIP());                                // print local IP address
+Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);                  // connect to firebase
+Firebase.reconnectWiFi(true);
+Firebase.set(firebaseData, "/LED_STATUS", "OFF");              // set initial string of "OFF"
+}
+
+void loop() {
+
+Firebase.get(firebaseData, "/LED_STATUS");                     // get led status input from firebase
+fireString = firebaseData.stringData();                        // change to e.g. intData() or boolData()
+Serial.println(fireString);
+
+if (fireString == "ON") {                    // compare the input of led status received from firebase
+  Serial.println("Led Turned ON");
+  digitalWrite(ledpin, HIGH);                // make output led ON
+}
+
+else if (fireString == "OFF") {              // compare the input of led status received from firebase
+  Serial.println("Led Turned OFF");
+  digitalWrite(ledpin, LOW);                 // make output led OFF
+}
+
+else {
+  Serial.println("Please send ON/OFF");
+}
+
+delay(1000);                                 // not strictly necessary
+}
+  </code></pre></div>
+
+  <p> <img src="./006.jpg" class="imagedoc"></p>
+
+
+  <p>But, we want to adapt this to button presses instead, so that one button increases a variable value by 1 and another button decreases by 1. </p>
+
+  <p>Strangely, the counter doesn't increment as it should, but we'll proceed and try to pull the value from Firebase instead.</p>
+
+  <div class="bodytext">
+    <pre><code class="language-arduino" id="coding">
+#include <WiFi.h>                                 // esp32 library
+#include <FirebaseESP32.h>                        // firebase library
+#include <LiquidCrystal.h>                        // LCD library
+
+#define FIREBASE_HOST "phys-s-12-esp-link-default-rtdb.firebaseio.com"  // the project name address from firebase id
+#define FIREBASE_AUTH "kl0A0i0B2T8X6QHxV1iTbO0hR8KZOv92kaKn1cQc"                                // the secret key generated from firebase
+#define WIFI_SSID "MAKERSPACE"                                    // input your home or public wifi name
+#define WIFI_PASSWORD "12345678"                                // password of wifi ssid
+
+#define BUTTON_UP 33 // Button pin up 
+#define BUTTON_DOWN 32  // Button pin down
+
+int lastState = HIGH; // the previous state from the input pin
+int lastState2 = HIGH;
+int currentState; // the current reading from the input pin
+int currentState2;
+static int titleValue = 0;
+
+int ledpin;
+
+LiquidCrystal lcd(19, 23, 18, 17, 16, 15);    // initialize the library with the numbers of the interface pins
+
+
+String fireString = "";                                          // led status received from firebase
+
+//Define FirebaseESP32 data object
+FirebaseData firebaseData;
+
+void setup() {
+Serial.begin(115200);
+delay(1000);
+WiFi.begin(WIFI_SSID, WIFI_PASSWORD);                          // try to connect with wifi
+
+pinMode(BUTTON_UP, INPUT_PULLUP);    // Pullup resistor
+pinMode(BUTTON_DOWN, INPUT_PULLUP);  // Pullup resistor
+
+lcd.begin(16, 2);
+// Print a message to the LCD.
+lcd.print("Tyler's LCD");
+
+Serial.print("Connecting to ");
+Serial.print(WIFI_SSID);
+while (WiFi.status() != WL_CONNECTED) {
+  Serial.print(".");
+  delay(500);
+}
+
+Serial.println();
+Serial.print("Connected to ");
+Serial.println(WIFI_SSID);
+Serial.print("IP Address is : ");
+Serial.println(WiFi.localIP());                                // print local IP address
+Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);                  // connect to firebase
+Firebase.reconnectWiFi(true);
+Firebase.set(firebaseData, "/LED_STATUS", "OFF");              // set initial string of "OFF"
+}
+
+void loop() {
+
+Firebase.get(firebaseData, "/MOVIEDB");                     // get led status input from firebase
+fireString = firebaseData.stringData();                        // change to e.g. intData() or boolData()
+Serial.println(fireString);
+
+if (fireString == "ON") {                    // compare the input of led status received from firebase
+  Serial.println("Led Turned ON");
+  digitalWrite(ledpin, HIGH);                // make output led ON
+}
+
+else if (fireString == "OFF") {              // compare the input of led status received from firebase
+  Serial.println("Led Turned OFF");
+  digitalWrite(ledpin, LOW);                 // make output led OFF
+}
+
+else {
+  Serial.println("Please send ON/OFF");
+}
+
+                      
+
+// read the state of the switch/button:
+currentState = digitalRead(BUTTON_UP);
+currentState2 = digitalRead(BUTTON_DOWN);
+
+if(lastState == LOW && currentState == HIGH)
+  Serial.println("The state of Button 1 changed from LOW to HIGH");
+  titleValue++;
+  Serial.println(titleValue);
+
+// save the last state
+lastState = currentState;
+
+if(lastState2 == LOW && currentState2 == HIGH)
+  Serial.println("The state of Button 2 changed from LOW to HIGH");
+  titleValue--;
+  Serial.println(titleValue);
+  
+  // save the last state
+lastState2 = currentState2;  
+
+
+// set the cursor to column 0, line 1
+// (note: line 1 is the second row, since counting begins with 0):
+lcd.setCursor(0, 1);
+// print the number of seconds since reset:
+lcd.print(titleValue);
+
+
+
+delay(250);     
+}
+</code></pre></div>
+
+<p> <img src="./007.jpg" class="imagedoc"></p>
+
+
+<p>Button update is not working, so we'll save this and try something else:</p>
+
+
+<div class="bodytext">
+  <pre><code class="language-arduino" id="coding">
+#include <WiFi.h>                                 // esp32 library
+#include <FirebaseESP32.h>                        // firebase library
+#include <LiquidCrystal.h>                        // LCD library
+
+#define FIREBASE_HOST "phys-s-12-esp-link-default-rtdb.firebaseio.com"  // the project name address from firebase id
+#define FIREBASE_AUTH "kl0A0i0B2T8X6QHxV1iTbO0hR8KZOv92kaKn1cQc"                                // the secret key generated from firebase
+#define WIFI_SSID "MAKERSPACE"                                    // input your home or public wifi name
+#define WIFI_PASSWORD "12345678"                                // password of wifi ssid
+
+#define BUTTON_UP 33 // Button pin up 
+#define BUTTON_DOWN 32  // Button pin down
+
+int lastState = HIGH; // the previous state from the input pin
+int lastState2 = HIGH;
+int currentState; // the current reading from the input pin
+int currentState2;
+
+LiquidCrystal lcd(19, 23, 18, 17, 16, 15);    // initialize the library with the numbers of the interface pins
+
+int fireInt = 1;                                          // led status received from firebase
+
+//Define FirebaseESP32 data object
+FirebaseData firebaseData;
+
+void setup() {
+  Serial.begin(115200);
+  delay(1000);
+  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);                          // try to connect with wifi
+  
+  pinMode(BUTTON_UP, INPUT_PULLUP);    // Pullup resistor
+  pinMode(BUTTON_DOWN, INPUT_PULLUP);  // Pullup resistor
+
+  lcd.begin(16, 2);
+  // Print a message to the LCD.
+  lcd.print("Tyler's LCD");
+
+  Serial.print("Connecting to ");
+  Serial.print(WIFI_SSID);
+  while (WiFi.status() != WL_CONNECTED) {
+    Serial.print(".");
+    delay(500);
+  }
+
+  Serial.println();
+  Serial.print("Connected to ");
+  Serial.println(WIFI_SSID);
+  Serial.print("IP Address is : ");
+  Serial.println(WiFi.localIP());                                // print local IP address
+  Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);                  // connect to firebase
+  Firebase.reconnectWiFi(true);
+  Firebase.set(firebaseData, "/MOVIEDB", fireInt);              // set initial value
+}
+
+void loop() {
+  
+
+  // read the state of the switch/button:
+  currentState = digitalRead(BUTTON_UP);
+  currentState2 = digitalRead(BUTTON_DOWN);
+
+  if(lastState == LOW && currentState == HIGH)
+    Serial.println("The state of Button 1 changed from LOW to HIGH");
+    fireInt++;
+    lastState = currentState;
+    Firebase.set(firebaseData, "/MOVIEDB", fireInt);
+    fireInt = Firebase.get(firebaseData, "/MOVIEDB"); 
+    Serial.println(fireInt);
+    
+
+  if(lastState2 == LOW && currentState2 == HIGH)
+    Serial.println("The state of Button 2 changed from LOW to HIGH");
+    fireInt--;
+    Serial.println(fireInt);
+    Firebase.set(firebaseData, "/MOVIEDB", fireInt); 
+    
+    // save the last state
+    lastState2 = currentState2;  
+    fireInt = Firebase.get(firebaseData, "/MOVIEDB"); 
+
+
+  // set the cursor to column 0, line 1
+  // (note: line 1 is the second row, since counting begins with 0):
+  lcd.setCursor(0, 1);
+  // print the number of seconds since reset:
+  lcd.print(fireInt);
+
+  
+
+  delay(250);     
+}
+  </code></pre></div>
+
+
+<p>Next we want to set up an API key for The Movie Database. We'll sign up at <a href="https://www.themoviedb.org/signup?language=en-US">https://www.themoviedb.org/signup?language=en-US</a></p>
+
+
+<p>The API documentation is here:</p>
+<p><a href="https://developers.themoviedb.org/3/getting-started/authentication">https://developers.themoviedb.org/3/getting-started/authentication</a></p>
+
+<p>A basic API call is something like:</p>
+
+<p>https://api.themoviedb.org/3/movie/76341?api_key=4926f95e3e11fe441fa99a7527200f63</p>
+
+<p>Where the movie id (76341, in this case) will return pertinent data:</p>
+
+
+<div class="bodytext">
+  <pre><code class="language-JSON" id="coding">
+  {"adult":false,"backdrop_path":"/l0eIS009XtEO80aC6zjM3o3AkEl.jpg","belongs_to_collection":{"id":8945,"name":"Mad Max Collection","poster_path":"/cNzCJnG4wstosen59BhydnUkaZJ.jpg","backdrop_path":"/gwYe803SFwKlCF5y71OicWHUnVD.jpg"},"budget":150000000,"genres":[{"id":28,"name":"Action"},{"id":12,"name":"Adventure"},{"id":878,"name":"Science Fiction"}],"homepage":"https://www.warnerbros.com/movies/mad-max-fury-road","id":76341,"imdb_id":"tt1392190","original_language":"en","original_title":"Mad Max: Fury Road","overview":"An apocalyptic story set in the furthest reaches of our planet, in a stark desert landscape where humanity is broken, and most everyone is crazed fighting for the necessities of life. Within this world exist two rebels on the run who just might be able to restore order.","popularity":140.101,"poster_path":"/8tZYtuWezp8JbcsvHYO0O46tFbo.jpg","production_companies":[{"id":79,"logo_path":"/tpFpsqbleCzEE2p5EgvUq6ozfCA.png","name":"Village Roadshow Pictures","origin_country":"US"},{"id":174,"logo_path":"/IuAlhI9eVC9Z8UQWOIDdWRKSEJ.png","name":"Warner Bros. Pictures","origin_country":"US"},{"id":2537,"logo_path":null,"name":"Kennedy Miller Productions","origin_country":"AU"},{"id":41624,"logo_path":"/wzKxIeQKlMP0y5CaAw25MD6EQmf.png","name":"RatPac Entertainment","origin_country":"US"}],"production_countries":[{"iso_3166_1":"AU","name":"Australia"},{"iso_3166_1":"US","name":"United States of America"},{"iso_3166_1":"ZA","name":"South Africa"}],"release_date":"2015-05-13","revenue":378858340,"runtime":121,"spoken_languages":[{"english_name":"English","iso_639_1":"en","name":"English"}],"status":"Released","tagline":"What a Lovely Day.","title":"Mad Max: Fury Road","video":false,"vote_average":7.6,"vote_count":19558}
+  </code></pre></div>
+
+
+<p>We have two lines available on the LCD, so we'll go with "title" for the movie title and "release_date" for the release date on line two. </p>
+
+<p>Now let's create some buttons to increment and decrement a counter in js.</p>
+
+
+<div class="bodytext">
+  <pre><code class="language-javascript" id="coding">
+    $(function() {
+      var //valueCount = $("counter").value(),
+          counter = $("#counter"),
+          addBtn = $("#increase"),
+          subBtn = $("#decrease"),
+          value = $("#counter").html();
+      
+      
+      addBtn.on("click", function() {
+        counter.html(++value);
+        console.log(value);
+        return
+        
+      });
+      
+        subBtn.on("click", function() {
+        counter.html(--value);
+        console.log(value);
+        return
+        
+      });
+    });
+  </code></pre></div>
+
+  <p> <img src="./008.jpg" class="imagedoc"></p>
+
+
+<p>We want to have a dynamic api call using a movie title number, so we'll break up the URLs: </p>
+
+<div class="bodytext">
+  <pre><code class="language-arduino" id="coding">
+    (script)
+      let api_url1 = "https://api.themoviedb.org/3/movie/";
+      let api_title = 500;
+      let api_url3 = "?api_key=4926f95e3e11fe441fa99a7527200f63";
+      let final_url = api_url1 + api_title + api_url3;
+      fetch(final_url)
+      .then(response => response.json())
+      .then(data => console.log(data));
+      (/script)
+  </code></pre></div>
+
+
+<p>I could not find any documentation for how to correctly insert a js variable into a firebase update, particularly for this firebsase 7.13. However, after some trial and error with syntax I got it working with curly braces and no $:</p>
+
+
+<div class="bodytext">
+  <pre><code class="language-arduino" id="coding">
+  let api_url1 = "https://api.themoviedb.org/3/movie/";
+  let api_title = 500;
+  let api_url3 = "?api_key=4926f95e3e11fe441fa99a7527200f63";
+  let final_url = api_url1 + api_title + api_url3;
+  fetch(final_url)
+  .then(response => response.json())
+  .then(data => console.log(data));
+
+
+  // make the buttons call the function below 
+  document.getElementById('increase').addEventListener('click', plusone, false);
+  document.getElementById('decrease').addEventListener('click', minusone, false);
+
+  firebase.database().ref('title').set({title:[api_title]});
+
+  function plusone(){
+      console.log("Plus one");
+      api_title++;
+      ref.update({
+          "title": {api_title}
+      });
+  }
+  function minusone(){
+      console.log("Minus one");
+      api_title--;
+      ref.update({
+          "title": {api_title}
+      });
+  }
+  </code></pre></div>
+
+
+
+  <p>In the console, we can see the api call working:</p>
+
+  <p> <img src="./009.jpg" class="imagedoc"></p>
+
+<p>But we want to also have the api call run any time the button is pressed, so let's functionalize the api call as well. </p>
+
+<div class="bodytext">
+  <pre><code class="language-arduino" id="coding">
+    // create function for api call
+    function apiCall(title){
+        let final_url = api_url1 + title + api_url3;
+        return fetch(final_url)
+            .then(response => response.json())
+            .then(data => console.log(data));
+    }
+    
+
+
+    // make the buttons call the function below 
+    document.getElementById('increase').addEventListener('click', plusone, false);
+    document.getElementById('decrease').addEventListener('click', minusone, false);
+
+    firebase.database().ref('title').set({title:[api_title]});
+
+    function plusone(){
+        console.log("Plus one");
+        api_title++;
+        apiCall(api_title);
+        ref.update({
+            "title": {api_title}
+        });
+    }
+    function minusone(){
+        console.log("Minus one");
+        api_title--;
+        apiCall(api_title);
+        ref.update({
+            "title": {api_title}
+        });
+    }
+  </code></pre></div>
+
+
 
 
 
