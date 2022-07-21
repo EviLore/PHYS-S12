@@ -35,11 +35,125 @@
   
 <body>
 <p></p>
-<div class="bodytext"><h4>Week 08: CNC Machining</h4></div>
+<div class="bodytext"><h4>Week 09: Radio, WiFi, Bluetooth (IoT)</h4></div>
 
 <p></p>
+
+<p>The goal for this week will be to connect to The Movie Database API to display movie titles on a LCD screen via ESP32 chipset. 
+  Via Firebase, the current title displayed will be saved remotely, 
+  and users will be able to scroll through the titles with buttons on a breadboard or by a simple web interface. </p>
+
+  <p>First, let's connect two buttons to an ESP32 using pullup resistors, referencing this tutorial:
+
+    https://esp32io.com/tutorials/esp32-button</p>
+
+
+
+
+    <div class="bodytext">
+      <pre><code class="language-arduino" id="coding">
+#define BUTTON_PIN 33 // GIOP21 pin connected to button
+#define BUTTON_PIN2 32
+
+// Variables will change:
+int lastState = HIGH; // the previous state from the input pin
+int lastState2 = HIGH;
+int currentState; // the current reading from the input pin
+int currentState2;
+
+void setup() {
+  Serial.begin(9600);
+  // initialize the pushbutton pin as an pull-up input
+  pinMode(BUTTON_PIN, INPUT_PULLUP);
+  pinMode(BUTTON_PIN2, INPUT_PULLUP);
+  
+}
+
+void loop() {
+  // read the state of the switch/button:
+  currentState = digitalRead(BUTTON_PIN);
+  currentState2 = digitalRead(BUTTON_PIN2);
+
+  if(lastState == LOW && currentState == HIGH)
+    Serial.println("The state of Button 1 changed from LOW to HIGH");
+
+  // save the last state
+  lastState = currentState;
+
+  if(lastState2 == LOW && currentState2 == HIGH)
+    Serial.println("The state of Button 2 changed from LOW to HIGH");
+    // save the last state
+  lastState2 = currentState2;
+  
+}
+</code></pre></div>
+
+<p> <img src="./001.jpg" class="imagedoc"></p>
+
+<p>Next, we'll try connecting the LCD to the ESP-32. 
+  Since it's lacking a serial interface we'll need to make a lot of connections manually…</p>
+
+  <p> <img src="./004.jpg" class="imagedoc"></p>
+
+<p>Source: <a href="https://www.circuitschools.com/interfacing-16x2-lcd-module-with-esp32-with-and-without-i2c/">https://www.circuitschools.com/interfacing-16x2-lcd-module-with-esp32-with-and-without-i2c/</a></p>
+
+
+<p>The pins are also different, so we'll need to reference the right pinout sheet:</p>
+
+<p> <img src="./005.jpg" class="imagedoc"></p>
+
+<p>Source: <a href="https://raw.githubusercontent.com/AchimPieters/esp32-homekit-camera/master/Images/ESP32-38%20PIN-DEVBOARD.png">https://raw.githubusercontent.com/AchimPieters/esp32-homekit-camera/master/Images/ESP32-38%20PIN-DEVBOARD.png</a></p>
+
+
+<p>It's hooked up, so let's take a look:</p>
+
+<p> <img src="./002.jpg" class="imagedoc"></p>
+
+<p>Next, we'll test the LCD's readout using this code:
+</p>
+
+<div class="bodytext">
+  <pre><code class="language-arduino" id="coding">
+    // include the library code:
+    #include <LiquidCrystal.h>
+     
+    // initialize the library with the numbers of the interface pins
+    LiquidCrystal lcd(19, 23, 18, 17, 16, 15);
+     
+    void setup() {
+      // set up the LCD's number of columns and rows:
+      lcd.begin(16, 2);
+      // Print a message to the LCD.
+      lcd.print("Tyler's LCD");
+    }
+     
+    void loop() {
+      // set the cursor to column 0, line 1
+      // (note: line 1 is the second row, since counting begins with 0):
+      lcd.setCursor(0, 1);
+      // print the number of seconds since reset:
+      lcd.print(millis() / 1000);
+    }    
+  </code></pre></div>
+
+<p>It's a success:</p>
+
+<p> <img src="./003.jpg" class="imagedoc"></p>
+
+
 
 </body>
 
 
 </html>
+
+
+
+
+
+<div class="bodytext">
+  <pre><code class="language-arduino" id="coding">
+
+  </code></pre></div>
+
+  <p> <img src="./000.jpg" class="imagedoc"></p>
