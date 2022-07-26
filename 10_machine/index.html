@@ -81,6 +81,62 @@
 
 <p> <img src="./010.jpg" class="imagedoc"></p>
 
+
+<p>Next, we'll code up an Arduino program. We'll add two buttons to the breadboard and set one to release the motor in order to reset the calibration. 
+  The other button will engage the motor and pull in the spring to set the launcher. 
+</p>
+
+
+<div class="bodytext">
+  <pre><code class="language-arduino" id="coding">
+
+#include <AccelStepper.h>
+
+const int stepPin = 13;  // blue
+const int dirPin = 12;   // orange
+const int buttonPin = 2;     // the number of the pushbutton pin
+const int buttonPin2 = 3;
+int buttonState = 0; 
+int buttonState2 = 0;   // variable for reading the pushbutton status
+
+// Define a stepper and the pins it will use
+AccelStepper stepper(1, stepPin, dirPin); // initialise accelstepper for a two wire board
+
+void setup()
+{
+    pinMode(buttonPin, INPUT);
+    pinMode(buttonPin2, INPUT);
+}
+
+void loop()
+{
+  buttonState = digitalRead(buttonPin);
+
+  if (buttonState == HIGH) {
+    stepper.disableOutputs();
+  }
+
+  if (buttonState2 == HIGH) 
+  {
+
+    if (stepper.distanceToGo() == 0)
+    {
+        stepper.moveTo(-50000);
+        stepper.setMaxSpeed(1000);
+        stepper.setAcceleration(1000);
+        }
+    stepper.disableOutputs();
+  }
+    
+    
+
+  stepper.run();
+}
+  </code></pre></div>
+
+
+
+
 </body>
 
 
