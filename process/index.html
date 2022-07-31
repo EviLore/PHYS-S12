@@ -59,10 +59,50 @@ Let's think about how we should scale it to five flex sensors and the ability to
 
 <p> <img src="./003.jpg" class="imagedoc"></p>
 
-
-
+Confirmed working.
 
 <p> <img src="./004.jpg" class="imagedoc"></p>
+
+
+<p>Let's look at some sample code for getting a basic flex sensor readout:</p>
+
+<div class="bodytext">
+  <pre><code class="language-arduino" id="coding">
+
+//Constants:
+const int ledPin = 3;   //pin 3 has PWM funtion
+const int flexPin = A0; //pin A0 to read analog input
+
+//Variables:
+int value; //save analog value
+
+
+void setup(){
+  
+  pinMode(ledPin, OUTPUT);  //Set pin 3 as 'output'
+  Serial.begin(9600);       //Begin serial communication
+
+}
+
+void loop(){
+  
+  value = analogRead(flexPin);         //Read and save analog value from potentiometer
+  Serial.println(value);               //Print value
+  value = map(value, 700, 900, 0, 255);//Map value 0-1023 to 0-255 (PWM)
+  analogWrite(ledPin, value);          //Send PWM value to led
+  delay(100);                          //Small delay
+  
+}
+  </code></pre></div>
+
+<p>Source: <a href="https://www.instructables.com/How-to-use-a-Flex-Sensor-Arduino-Tutorial/calibrated">https://www.instructables.com/How-to-use-a-Flex-Sensor-Arduino-Tutorial/calibrated</a></p>
+
+
+
+<p>Here's a sample of the serial output from the flex sensor.</p>
+
+<p> <img src="./035.jpg" class="imagedoc"></p>
+
 
 <p> <img src="./005.jpg" class="imagedoc"></p>
 
