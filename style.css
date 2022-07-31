@@ -64,6 +64,12 @@ background-color: gainsboro;
   height: auto;
 }
 
+.imagedocsm {
+  width: 100%;
+  max-width: 500px;
+  height: 500px;
+}
+
 #homenav {
   font-size: larger;
   padding: 0px;
