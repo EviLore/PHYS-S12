@@ -336,20 +336,96 @@ Turns out the larger speakers are significantly louder and clearer sounding, so 
 
 <p>The flex sensors can't be overstretched along their length, so they'll need to be partially free-floating, at least on the far end.</p>
 
+<p>We'll use a placeholder glove and string to test out the setup before the proper glove comes in.</p>
+
 <p> <img src="./013.jpg" class="imagedoc"></p>
+
+<p>Knowing that the concept works, we'll move on to zip ties and double sided velcro (with superglue applied to the velcro backing for better hold).</p>
 
 <p> <img src="./036.jpg" class="imagedoc"></p>
 
+Pictured below, the flex sensors have been affixed to the final glove ( 
+  Grip Boost DNA Football Gloves with Engineered Grip - XL). Velcro is attached to the base of the flex sensors, and also attached to the glove at the base of the fingers.
+
 <p> <img src="./037.jpg" class="imagedoc"></p>
+
+We don't have a housing for the microcontroller PCB and the speaker--yet. But we will soon. 
 
 <p> <img src="./038.jpg" class="imagedoc"></p>
 
+<p>Here's a first test of the glove in action. </p>
 
 <div class="bodytext">
   <iframe width="600" height="400"
 src="https://youtube.com/embed/-uvB5D_ojuc">
 </iframe>
 </div>
+
+<p>I wrote this code to test out the flex sensors and play a sound when each is flexed sufficiently:</p>
+
+
+<div class="bodytext">
+  <pre><code class="language-arduino" id="coding">
+    #include "pitches.h"
+    //Constants:
+    const int flexPin0 = A0; // pinky
+    const int flexPin1 = A1; // ring
+    const int flexPin2 = A2; // middle
+    const int flexPin3 = A3; // index
+    const int flexPin4 = A4; // thumb
+    
+    
+    //Variables:
+    int value0; //save analog value
+    int value1;
+    int value2;
+    int value3;
+    int value4;
+    
+    
+    void setup(){
+      Serial.begin(9600);       //Begin serial communication
+      pinMode(A0, INPUT_PULLUP);  // set pull-up on analog pin 0
+      pinMode(A1, INPUT_PULLUP);  // set pull-up on analog pin 0
+      pinMode(A2, INPUT_PULLUP);  // set pull-up on analog pin 0
+      pinMode(A3, INPUT_PULLUP);  // set pull-up on analog pin 0
+      pinMode(A4, INPUT_PULLUP);  // set pull-up on analog pin 0
+    }
+    
+    void loop(){
+      
+      value0 = analogRead(flexPin0);  //Read and save analog value from potentiometer
+      value1 = analogRead(flexPin1); 
+      value2 = analogRead(flexPin2);
+      value3 = analogRead(flexPin3);
+      value4 = analogRead(flexPin4);
+      
+      Serial.println(value0); 
+      delay(100);                          //Small delay
+    
+      if (value0 < 300){
+        tone(3, NOTE_C1, 500);
+      }
+    
+      if (value1 < 300){
+        tone(3, NOTE_C2, 500);
+      }
+    
+       if (value2 < 300){
+        tone(3, NOTE_C3, 500);
+      }
+      
+      if (value3 < 300){
+        tone(3, NOTE_C4, 500);
+      }
+      
+      if (value4 < 300){
+        tone(3, NOTE_C5, 500);
+      }
+    }
+  </code></pre></div>
+
+
 
 <p> <img src="./042.jpg" class="imagedoc"></p>
 
