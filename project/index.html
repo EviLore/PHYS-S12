@@ -161,7 +161,7 @@ src="https://youtube.com/embed/r3Em0Yl43BY">
 <div class="bodytext">
   <pre><code class="language-arduino" id="coding">
 #include "pitches.h"
-#include <MIDIUSB.h>
+#include MIDIUSB.h>
 
 // Constants:
 
@@ -360,10 +360,10 @@ void midiCommand(byte cmd, byte data1, byte  data2) {
   <pre><code class="language-arduino" id="coding">
 
 
-#include <MozziGuts.h>
-#include <Oscil.h>
-#include <tables/cos8192_int8.h>
-#include <mozzi_midi.h>
+#include MozziGuts.h>
+#include Oscil.h>
+#include tables/cos8192_int8.h>
+#include mozzi_midi.h>
 
 #define CONTROL_RATE 256
 
