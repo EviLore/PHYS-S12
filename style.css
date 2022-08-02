@@ -64,6 +64,13 @@ background-color: gainsboro;
   height: auto;
 }
 
+.imagedocp {
+  width: 100%;
+  max-width: 720px;
+  height: auto;
+}
+
+
 .imagedocsm {
   width: 4%;
   height: 20%;
