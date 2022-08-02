@@ -349,6 +349,260 @@ void midiCommand(byte cmd, byte data1, byte  data2) {
     </code></pre></div>
 
 
+
+<p>On-board synthesisizer control (adapted from Mozzi example sketch:</p>
+
+<div class="bodytext">
+  <pre><code class="language-arduino" id="coding">
+
+
+#include <MozziGuts.h>
+#include <Oscil.h>
+#include <tables/cos8192_int8.h>
+#include <mozzi_midi.h>
+
+#define CONTROL_RATE 256
+
+#define THERMISTOR_PIN 1
+#define LDR_PIN 2
+#define NUM_VOICES 8
+#define THRESHOLD 10
+
+// harmonics
+Oscil<COS8192_NUM_CELLS, AUDIO_RATE> aCos1(COS8192_DATA);
+Oscil<COS8192_NUM_CELLS, AUDIO_RATE> aCos2(COS8192_DATA);
+Oscil<COS8192_NUM_CELLS, AUDIO_RATE> aCos3(COS8192_DATA);
+Oscil<COS8192_NUM_CELLS, AUDIO_RATE> aCos4(COS8192_DATA);
+Oscil<COS8192_NUM_CELLS, AUDIO_RATE> aCos5(COS8192_DATA);
+Oscil<COS8192_NUM_CELLS, AUDIO_RATE> aCos6(COS8192_DATA);
+Oscil<COS8192_NUM_CELLS, AUDIO_RATE> aCos7(COS8192_DATA);
+Oscil<COS8192_NUM_CELLS, AUDIO_RATE> aCos0(COS8192_DATA);
+
+// volume controls
+Oscil<COS8192_NUM_CELLS, CONTROL_RATE> kVol1(COS8192_DATA);
+Oscil<COS8192_NUM_CELLS, CONTROL_RATE> kVol2(COS8192_DATA);
+Oscil<COS8192_NUM_CELLS, CONTROL_RATE> kVol3(COS8192_DATA);
+Oscil<COS8192_NUM_CELLS, CONTROL_RATE> kVol4(COS8192_DATA);
+Oscil<COS8192_NUM_CELLS, CONTROL_RATE> kVol5(COS8192_DATA);
+Oscil<COS8192_NUM_CELLS, CONTROL_RATE> kVol6(COS8192_DATA);
+Oscil<COS8192_NUM_CELLS, CONTROL_RATE> kVol7(COS8192_DATA);
+Oscil<COS8192_NUM_CELLS, CONTROL_RATE> kVol0(COS8192_DATA);
+
+// audio volumes updated each control interrupt and reused in audio till next control
+char v1,v2,v3,v4,v5,v6,v7,v0;
+
+// notes to play depending on whether temperature reading increases or decreases
+float upnotes[NUM_VOICES] = {
+  mtof(62.f),mtof(64.f),mtof(70.f),mtof(72.f),mtof(79.f),mtof(81.f), mtof(86.f), mtof(88.f)};
+
+float downnotes[NUM_VOICES] = {
+  mtof(64.f),mtof(65.f),mtof(88.f),mtof(72.f),mtof(79.f),mtof(84.f),mtof(86.f),mtof(89.f)};
+
+
+void setup(){
+  startMozzi(CONTROL_RATE);
+}
+
+
+// returns freq
+int temperatureToFreq(char oscil_num, int temperature){
+  static int previous_temperature;
+  int freq;
+  if (temperature>previous_temperature){
+    freq = upnotes[oscil_num];
+  } else {
+      freq = downnotes[oscil_num];
+  }
+  previous_temperature = temperature;
+  return freq;
+}
+
+
+void updateControl(){
+  static float previous_pulse_freq;
+
+  // read analog inputs
+  int temperature = mozziAnalogRead(THERMISTOR_PIN); // not calibrated to degrees!
+  int light = mozziAnalogRead(LDR_PIN);
+
+  // map light reading to volume pulse frequency
+  float pulse_freq = (float)light/256;
+  previous_pulse_freq = pulse_freq;
+
+  v0 = kVol0.next();
+  v1 = kVol1.next();
+  v2 = kVol2.next();
+  v3 = kVol3.next();
+  v4 = kVol4.next();
+  v5 = kVol5.next();
+  v6 = kVol6.next();
+  v7 = kVol7.next();
+
+  // set one note oscillator frequency each time (if it's volume is close to 0)
+  static char whoseTurn;
+  switch(whoseTurn){
+  case 0:
+    kVol0.setFreq(pulse_freq);
+    if(abs(v0)<THRESHOLD) aCos0.setFreq(temperatureToFreq(0,temperature));
+    break;
+
+  case 1:
+    kVol1.setFreq(pulse_freq);
+    if(abs(v1)<THRESHOLD) aCos1.setFreq(temperatureToFreq(1,temperature));
+    break;
+
+  case 2:
+    kVol2.setFreq(pulse_freq);
+    if(abs(v2)<THRESHOLD) aCos2.setFreq(temperatureToFreq(2,temperature));
+    break;
+
+  case 3:
+    kVol3.setFreq(pulse_freq);
+    if(abs(v3)<THRESHOLD) aCos3.setFreq(temperatureToFreq(3,temperature));
+    break;
+
+  case 4:
+    kVol4.setFreq(pulse_freq);
+    if(abs(v4)<THRESHOLD) aCos4.setFreq(temperatureToFreq(4,temperature));
+    break;
+
+  case 5:
+    kVol5.setFreq(pulse_freq);
+    if(abs(v5)<THRESHOLD) aCos5.setFreq(temperatureToFreq(5,temperature));
+    break;
+
+  case 6:
+    kVol6.setFreq(pulse_freq);
+    if(abs(v6)<THRESHOLD) aCos6.setFreq(temperatureToFreq(6,temperature));
+    break;
+
+  case 7:
+    kVol7.setFreq(pulse_freq);
+    if(abs(v7)<THRESHOLD) aCos7.setFreq(temperatureToFreq(7,temperature));
+    break;
+
+  }
+
+  if(++whoseTurn>=NUM_VOICES) whoseTurn = 0;
+}
+
+
+
+AudioOutput_t updateAudio(){
+  long asig = (long)
+    aCos0.next()*v0 +
+      aCos1.next()*v1 +
+      aCos2.next()*v2 +
+      aCos3.next()*v3 +
+      aCos4.next()*v4 +
+      aCos5.next()*v5 +
+      aCos6.next()*v6 +
+      aCos7.next()*v7;
+  return MonoOutput::fromAlmostNBit(18, asig);
+}
+
+
+
+void loop(){
+  audioHook();
+}
+  </code></pre></div>
+
+
+<p>Code for LED integration, adapted from FastLED example sketch:</p>
+
+
+<div class="bodytext">
+  <pre><code class="language-arduino" id="coding">
+#include <FastLED.h>
+
+#define LED_PIN     5
+#define NUM_LEDS    78
+#define BRIGHTNESS  10
+#define LED_TYPE    WS2811
+#define COLOR_ORDER GRB
+CRGB leds[NUM_LEDS];
+
+#define UPDATES_PER_SECOND 100
+
+CRGBPalette16 currentPalette;
+TBlendType    currentBlending;
+
+extern CRGBPalette16 myRedWhiteBluePalette;
+extern const TProgmemPalette16 myRedWhiteBluePalette_p PROGMEM;
+
+
+void setup() {
+    delay( 3000 ); // power-up safety delay
+    FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
+    FastLED.setBrightness(BRIGHTNESS);
+    
+    currentPalette = RainbowColors_p;
+    currentBlending = LINEARBLEND;
+}
+
+
+void loop()
+{
+    ChangePalettePeriodically();
+    
+    static uint8_t startIndex = 0;
+    startIndex = startIndex + 1; /* motion speed */
+    
+    FillLEDsFromPaletteColors( startIndex);
+    
+    FastLED.show();
+    FastLED.delay(1000 / UPDATES_PER_SECOND);
+}
+
+void FillLEDsFromPaletteColors( uint8_t colorIndex)
+{
+    uint8_t brightness = 255;
+    
+    for( int i = 0; i < NUM_LEDS; i++) {
+        leds[i] = ColorFromPalette( currentPalette, colorIndex, brightness, currentBlending);
+        colorIndex += 3;
+    }
+}
+
+
+
+void ChangePalettePeriodically()
+{
+    uint8_t secondHand = (millis() / 1000) % 60;
+    static uint8_t lastSecond = 99;
+    
+    if( lastSecond != secondHand) {
+        lastSecond = secondHand;
+        if( secondHand ==  0)  { currentPalette = RainbowStripeColors_p;   currentBlending = LINEARBLEND; }
+    
+  
+    }
+}
+
+const TProgmemPalette16 myRedWhiteBluePalette_p PROGMEM =
+{
+    CRGB::Red,
+    CRGB::Gray, // 'white' is too bright compared to red and blue
+    CRGB::Blue,
+    CRGB::Black,
+    
+    CRGB::Red,
+    CRGB::Gray,
+    CRGB::Blue,
+    CRGB::Black,
+    
+    CRGB::Red,
+    CRGB::Red,
+    CRGB::Gray,
+    CRGB::Gray,
+    CRGB::Blue,
+    CRGB::Blue,
+    CRGB::Black,
+    CRGB::Black
+};
+  </code></pre></div>
+
 </html>
 
 
