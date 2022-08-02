@@ -354,7 +354,7 @@ void midiCommand(byte cmd, byte data1, byte  data2) {
 
 
 
-<p>On-board synthesisizer control code (adapted from Mozzi example sketch:</p>
+<p>On-board synthesisizer control code (adapted from Mozzi example sketch (replace ! with >):</p>
 
 <div class="bodytext">
   <pre><code class="language-arduino" id="coding">
@@ -373,24 +373,24 @@ void midiCommand(byte cmd, byte data1, byte  data2) {
 #define THRESHOLD 10
 
 // harmonics
-Oscil<COS8192_NUM_CELLS, AUDIO_RATE> aCos1(COS8192_DATA);
-Oscil<COS8192_NUM_CELLS, AUDIO_RATE> aCos2(COS8192_DATA);
-Oscil<COS8192_NUM_CELLS, AUDIO_RATE> aCos3(COS8192_DATA);
-Oscil<COS8192_NUM_CELLS, AUDIO_RATE> aCos4(COS8192_DATA);
-Oscil<COS8192_NUM_CELLS, AUDIO_RATE> aCos5(COS8192_DATA);
-Oscil<COS8192_NUM_CELLS, AUDIO_RATE> aCos6(COS8192_DATA);
-Oscil<COS8192_NUM_CELLS, AUDIO_RATE> aCos7(COS8192_DATA);
-Oscil<COS8192_NUM_CELLS, AUDIO_RATE> aCos0(COS8192_DATA);
+Oscil!COS8192_NUM_CELLS, AUDIO_RATE> aCos1(COS8192_DATA);
+Oscil!COS8192_NUM_CELLS, AUDIO_RATE> aCos2(COS8192_DATA);
+Oscil!COS8192_NUM_CELLS, AUDIO_RATE> aCos3(COS8192_DATA);
+Oscil!COS8192_NUM_CELLS, AUDIO_RATE> aCos4(COS8192_DATA);
+Oscil!COS8192_NUM_CELLS, AUDIO_RATE> aCos5(COS8192_DATA);
+Oscil!COS8192_NUM_CELLS, AUDIO_RATE> aCos6(COS8192_DATA);
+Oscil!COS8192_NUM_CELLS, AUDIO_RATE> aCos7(COS8192_DATA);
+Oscil!COS8192_NUM_CELLS, AUDIO_RATE> aCos0(COS8192_DATA);
 
 // volume controls
-Oscil<COS8192_NUM_CELLS, CONTROL_RATE> kVol1(COS8192_DATA);
-Oscil<COS8192_NUM_CELLS, CONTROL_RATE> kVol2(COS8192_DATA);
-Oscil<COS8192_NUM_CELLS, CONTROL_RATE> kVol3(COS8192_DATA);
-Oscil<COS8192_NUM_CELLS, CONTROL_RATE> kVol4(COS8192_DATA);
-Oscil<COS8192_NUM_CELLS, CONTROL_RATE> kVol5(COS8192_DATA);
-Oscil<COS8192_NUM_CELLS, CONTROL_RATE> kVol6(COS8192_DATA);
-Oscil<COS8192_NUM_CELLS, CONTROL_RATE> kVol7(COS8192_DATA);
-Oscil<COS8192_NUM_CELLS, CONTROL_RATE> kVol0(COS8192_DATA);
+Oscil!COS8192_NUM_CELLS, CONTROL_RATE> kVol1(COS8192_DATA);
+Oscil!COS8192_NUM_CELLS, CONTROL_RATE> kVol2(COS8192_DATA);
+Oscil!COS8192_NUM_CELLS, CONTROL_RATE> kVol3(COS8192_DATA);
+Oscil!COS8192_NUM_CELLS, CONTROL_RATE> kVol4(COS8192_DATA);
+Oscil!COS8192_NUM_CELLS, CONTROL_RATE> kVol5(COS8192_DATA);
+Oscil!COS8192_NUM_CELLS, CONTROL_RATE> kVol6(COS8192_DATA);
+Oscil!COS8192_NUM_CELLS, CONTROL_RATE> kVol7(COS8192_DATA);
+Oscil!COS8192_NUM_CELLS, CONTROL_RATE> kVol0(COS8192_DATA);
 
 // audio volumes updated each control interrupt and reused in audio till next control
 char v1,v2,v3,v4,v5,v6,v7,v0;
@@ -447,42 +447,42 @@ void updateControl(){
   switch(whoseTurn){
   case 0:
     kVol0.setFreq(pulse_freq);
-    if(abs(v0)<THRESHOLD) aCos0.setFreq(temperatureToFreq(0,temperature));
+    if(abs(v0)!THRESHOLD) aCos0.setFreq(temperatureToFreq(0,temperature));
     break;
 
   case 1:
     kVol1.setFreq(pulse_freq);
-    if(abs(v1)<THRESHOLD) aCos1.setFreq(temperatureToFreq(1,temperature));
+    if(abs(v1)!THRESHOLD) aCos1.setFreq(temperatureToFreq(1,temperature));
     break;
 
   case 2:
     kVol2.setFreq(pulse_freq);
-    if(abs(v2)<THRESHOLD) aCos2.setFreq(temperatureToFreq(2,temperature));
+    if(abs(v2)!THRESHOLD) aCos2.setFreq(temperatureToFreq(2,temperature));
     break;
 
   case 3:
     kVol3.setFreq(pulse_freq);
-    if(abs(v3)<THRESHOLD) aCos3.setFreq(temperatureToFreq(3,temperature));
+    if(abs(v3)!THRESHOLD) aCos3.setFreq(temperatureToFreq(3,temperature));
     break;
 
   case 4:
     kVol4.setFreq(pulse_freq);
-    if(abs(v4)<THRESHOLD) aCos4.setFreq(temperatureToFreq(4,temperature));
+    if(abs(v4)!THRESHOLD) aCos4.setFreq(temperatureToFreq(4,temperature));
     break;
 
   case 5:
     kVol5.setFreq(pulse_freq);
-    if(abs(v5)<THRESHOLD) aCos5.setFreq(temperatureToFreq(5,temperature));
+    if(abs(v5)!THRESHOLD) aCos5.setFreq(temperatureToFreq(5,temperature));
     break;
 
   case 6:
     kVol6.setFreq(pulse_freq);
-    if(abs(v6)<THRESHOLD) aCos6.setFreq(temperatureToFreq(6,temperature));
+    if(abs(v6)!THRESHOLD) aCos6.setFreq(temperatureToFreq(6,temperature));
     break;
 
   case 7:
     kVol7.setFreq(pulse_freq);
-    if(abs(v7)<THRESHOLD) aCos7.setFreq(temperatureToFreq(7,temperature));
+    if(abs(v7)!THRESHOLD) aCos7.setFreq(temperatureToFreq(7,temperature));
     break;
 
   }
